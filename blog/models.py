@@ -1,8 +1,7 @@
-from django.db import models
-
 from django import forms
-from django.utils import timezone
 from django.contrib.auth.models import User
+from django.db import models
+from django.utils import timezone
 from django_measurement.models import MeasurementField
 from measurement.measures import Distance
 
