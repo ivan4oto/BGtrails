@@ -1,6 +1,8 @@
 from django.contrib.auth import logout, authenticate, login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
 
+from django import forms
 from .forms import CreateUserForm
 from .models import Post
 from django.contrib import messages
@@ -54,6 +56,32 @@ def home(request):
         'posts': Post.objects.all()
     }
     return render(request, 'blog/home.html', context)
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'distance', 'elevation', 'description']
+
+
+def detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    return render(request, 'blog/detail.html', {'post': post})
+
+
+def edit_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+
+    if request.method == 'POST':
+        form = PostForm(data=request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('blog-home'))
+        else:
+            return render(request, 'blog/edit_post.html', {'post': post, 'form': form})
+    else:
+        form = PostForm(instance=post)
+        return render(request, 'blog/edit_post.html', {'post': post, 'form': form})
 
 
 def about(request):

@@ -47,6 +47,7 @@ body {
   
   .article-content {
     white-space: pre-line;
+    margin:0;
   }
   
   .article-img {
@@ -82,3 +83,4 @@ body {
   .account-heading {
     font-size: 2.5rem;
   }
+
