@@ -8,7 +8,7 @@ from django.contrib import messages
 
 def register_page(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('/blog/')
     else:
         form = CreateUserForm()
         if request.method == 'POST':
