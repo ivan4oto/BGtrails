@@ -1,9 +1,16 @@
 from django.contrib.auth import logout, authenticate, login
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    ListView,
+    UpdateView,
+    DeleteView
+)
 
 from django import forms
-from .forms import CreateUserForm
+from .forms import CreateUserForm, CreatePostForm
 from .models import Post
 from django.contrib import messages
 
@@ -51,22 +58,38 @@ def logout_user(request):
     return redirect('/blog/')
 
 
-def home(request):
-    context = {
-        'posts': Post.objects.all()
-    }
-    return render(request, 'blog/home.html', context)
+# def home(request):
+#     context = {
+#         'posts': Post.objects.all()
+#     }
+#     return render(request, 'blog/home.html', context)
+
+# def detail(request, post_id):
+#     post = get_object_or_404(Post, id=post_id)
+#     return render(request, 'blog/detail.html', {'post': post})
+
+
+class PostListView(ListView):
+    queryset = Post.objects.all()
+
+
+class PostDetailView(DetailView):
+
+    def get_object(self):
+        id_ = self.kwargs.get("post_id")
+        return get_object_or_404(Post, id=id_)
+
+
+class PostCreateView(CreateView):
+    model = Post
+    form_class = CreatePostForm
+    queryset = Post.objects.all()
 
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'distance', 'elevation', 'description']
-
-
-def detail(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    return render(request, 'blog/detail.html', {'post': post})
 
 
 def edit_post(request, post_id):
