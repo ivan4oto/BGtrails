@@ -11,8 +11,10 @@ from django.views.generic import (
 
 from django import forms
 from .forms import CreateUserForm, CreatePostForm
-from .models import Post
+from .models import Post, PostImage
 from django.contrib import messages
+
+from measurement.measures import Distance
 
 
 def register_page(request):
@@ -58,26 +60,44 @@ def logout_user(request):
     return redirect('/blog/')
 
 
-# def home(request):
-#     context = {
-#         'posts': Post.objects.all()
-#     }
-#     return render(request, 'blog/home.html', context)
+def home(request):
+    context = {
+        'posts': Post.objects.all()
+    }
+    name = request.GET.get('name')
+    distance = request.GET.get('distance')
+    elevation = request.GET.get('name')
+    if name:
+        context['posts'] = Post.objects.filter(title__icontains=name)
+        return render(request, 'blog/post_list.html', context)
+    if distance:
+        context['posts'] = Post.objects.filter(distance__gt=Distance(km=distance))
+        return render(request, 'blog/post_list.html', context)
+    if elevation:
+        context['posts'] = Post.objects.filter(distance__gt=Distance(m=elevation))
+        return render(request, 'blog/post_list.html', context)
 
-# def detail(request, post_id):
-#     post = get_object_or_404(Post, id=post_id)
-#     return render(request, 'blog/detail.html', {'post': post})
+    return render(request, 'blog/post_list.html', context)
 
 
-class PostListView(ListView):
-    queryset = Post.objects.all()
+def detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    photos = PostImage.objects.filter(post=post)
+    return render(request, 'blog/detail.html', {
+        'post': post,
+        'photos': photos
+    })
 
 
-class PostDetailView(DetailView):
+# class PostListView(ListView):
+#     queryset = Post.objects.all()
 
-    def get_object(self):
-        id_ = self.kwargs.get("post_id")
-        return get_object_or_404(Post, id=id_)
+
+# class PostDetailView(DetailView):
+
+#     def get_object(self):
+#         id_ = self.kwargs.get("post_id")
+#         return get_object_or_404(Post, id=id_)
 
 
 class PostCreateView(CreateView):
@@ -89,11 +109,11 @@ class PostCreateView(CreateView):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'distance', 'elevation', 'description']
+        fields = ['title', 'distance', 'elevation', 'description', 'image']
 
 
 def edit_post(request, post_id):
-    post = Post.objects.get(id=post_id)
+    post = get_object_or_404(Post, id=post_id)
 
     if request.method == 'POST':
         form = PostForm(data=request.POST, instance=post)

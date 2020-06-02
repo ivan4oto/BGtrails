@@ -1,7 +1,9 @@
 Edit: {{ post }}
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data"> {% csrf_token %}
     {% csrf_token %}
     {{ form.as_p }}
-    <button>Edit!</button>
+    <input type='submit' value='Edit' />
 </form>
+
+

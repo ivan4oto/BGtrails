@@ -37,6 +37,7 @@ body {
   }
   
   .article-title {
+    font-family: Helvetica, sans-serif;
     color: #444444;
   }
   
@@ -50,12 +51,29 @@ body {
     margin:0;
   }
   
+  .article-description {
+    font-family: Helvetica, sans-serif;
+    color: lightslategray;
+    white-space: pre-line;
+    margin-top: 1em ;
+    margin-bottom: 1em ;
+  }
   .article-img {
-    height: 65px;
-    width: 65px;
+    height: 300px;
+    width: 300px;
+    margin-top: 1em ;
+    margin-bottom: 1em ;
     margin-right: 16px;
   }
-  
+
+  .article-photo {
+    max-width:450px;
+    max-height:450px;  
+    margin-top: 1em ;
+    margin-bottom: 1em ;
+    margin-right: 16px;
+  }
+
   .article-metadata {
     padding-bottom: 1px;
     margin-bottom: 4px;
