@@ -13,7 +13,7 @@ class Post(models.Model):
     description = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    file = forms.FileField()
+    file = models.FileField(null=True)
 
     def __str__(self):
         return f'Title: {self.title}, Distance: {self.distance}'
