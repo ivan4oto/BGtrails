@@ -1,6 +1,8 @@
 from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
+from django.contrib.auth.models import Group
 from django.views.generic import (
     CreateView,
     DetailView,
@@ -10,8 +12,10 @@ from django.views.generic import (
 )
 
 from django import forms
-from .forms import CreateUserForm, CreatePostForm
-from .models import Post
+
+from .decorators import allowed_users
+from .forms import CreateUserForm, CreatePostForm, AdventurerForm
+from .models import Post, Adventurer
 from django.contrib import messages
 
 
@@ -23,9 +27,14 @@ def register_page(request):
         if request.method == 'POST':
             form = CreateUserForm(request.POST)
             if form.is_valid():
-                form.save()
-                user = form.cleaned_data.get('username')
-                messages.success(request, 'Account was created for ' + user)
+                user = form.save()
+                username = form.cleaned_data.get('username')
+
+                group = Group.objects.get_or_create(name='adventurers')
+                user.groups.add(group[0])
+                Adventurer.objects.create(user=user, name=user.username)
+
+                messages.success(request, 'Account was created for ' + username)
 
                 return redirect('login')
 
@@ -68,6 +77,31 @@ def logout_user(request):
 #     post = get_object_or_404(Post, id=post_id)
 #     return render(request, 'blog/detail.html', {'post': post})
 
+@login_required(login_url='blog:login')
+@allowed_users(allowed_roles=['adventurers', 'admin'])
+def adventurer(request, pk_adventurer):
+    adventurer = Adventurer.objects.get(id=pk_adventurer)
+    posts = adventurer.post_set.all()
+    posts_count = posts.count()
+
+    context = {'adventurer': adventurer, 'posts': posts, 'posts_count': posts_count}
+    return render(request, 'blog/adventurer.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['adventurers', 'admin'])
+def account_settings(request):
+    adventurer = request.user.adventurer
+    form = AdventurerForm(instance=adventurer)
+
+    if request.method == 'POST':
+        form = AdventurerForm(request.POST, request.FILES, instance=adventurer)
+        if form.is_valid():
+            form.save()
+
+    context = {'form': form}
+    return render(request, 'blog/adventurer_settings.html', context)
+
 
 class PostListView(ListView):
     queryset = Post.objects.all()
@@ -92,8 +126,14 @@ class PostForm(forms.ModelForm):
         fields = ['title', 'distance', 'elevation', 'description']
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['adventurers', 'admin'])
 def edit_post(request, post_id):
     post = Post.objects.get(id=post_id)
+    adventurer = request.user.adventurer
+
+    if not adventurer.post_set.filter(id=post_id):
+        return redirect('blog-home')
 
     if request.method == 'POST':
         form = PostForm(data=request.POST, instance=post)
