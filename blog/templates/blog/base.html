@@ -34,6 +34,7 @@
                 <div class="navbar-nav mr-auto">
                     <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
                     <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
+{#                    tozi boton she go shriem za da ne moje user koito ne se e lognal da pravi post!!#}
                     <a class="nav-item nav-link" href="{% url 'create' %}">Create</a>
                 </div>
                 <!-- Navbar Right Side -->
@@ -43,7 +44,9 @@
                         <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                     {% endif %}
                     {% if  user.is_authenticated %}
-                        <a class="nav-item nav-link" href="{% url 'adventurer' user.id %}">My blogs</a>
+                        <a class="nav-item nav-link" href="{% url 'adventurer' user.adventurer.id %}">My blogs</a>
+                        <a class="nav-item nav-link" href="{% url 'want-go' %}">Wish to go!</a>
+                        <a class="nav-item nav-link" href="{% url 'went_there' %}">Already been there!</a>
                         <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     {% endif %}
                 </div>

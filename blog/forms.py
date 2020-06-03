@@ -1,10 +1,8 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django import forms
-from .models import Post, PostImage, Adventurer
 
-from django_measurement.models import MeasurementField
-from measurement.measures import Distance
+from .models import Post, Adventurer, Rate
 
 
 class CreateUserForm(UserCreationForm):
@@ -27,9 +25,16 @@ class CreatePostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'distance', 'elevation', 'description', 'file', 'author']
 
+
 # class CreatePostForm(forms.Form):
 #     title = forms.CharField(initial='My New Hike')
 #     distance = MeasurementField(measurement=Distance)
 #     elevation = MeasurementField(measurement=Distance)
 #     description = forms.Textarea()
 #     file = forms.FileField(required=True)
+
+class RateForm(forms.ModelForm):
+    class Meta:
+        model = Rate
+        fields = '__all__'
+        exclude = ['author', 'post']
