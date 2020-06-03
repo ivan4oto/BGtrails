@@ -1,15 +1,13 @@
 {% extends 'blog/base.html' %}
 {% block content %}
-    <article class="media content-section">
-        <div class="media-body">
-            {% if  object.author == user.adventurer %}
-                <a href="{% url 'update' object.id %}">Edit</a>
-            {% endif %}
-            <h2>{{ object.title }}</h2>
-            <p>Distance: {{ object.distance }}</p>
-            <p>Elevation: {{ object.elevation }}</p>
-            <p>Download GPX: {{ object.file }}</p>
-        </div>
-    </article>
+<article class="media content-section">
+    <div class="media-body">
+        <a href="{% url 'update' object.id %}">Edit</a>
+        <h2>{{ object.title }}</h2>
+        <p>Distance: {{ object.distance }}</p>
+        <p>Elevation: {{ object.elevation }}</p>
+        <td><a href="{{ post.file.url }}">Download GPX</a></td>
+    </div>
+</article>
 
 {% endblock %}

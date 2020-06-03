@@ -15,8 +15,11 @@ from django import forms
 
 from .decorators import allowed_users
 from .forms import CreateUserForm, CreatePostForm, AdventurerForm
-from .models import Post, Adventurer
+from .models import Post, Adventurer, PostImage
 from django.contrib import messages
+
+from measurement.measures import Distance
+from coordinates import get_location
 
 
 def register_page(request):
@@ -67,21 +70,32 @@ def logout_user(request):
     return redirect('/blog/')
 
 
-# def home(request):
-#     context = {
-#         'posts': Post.objects.all()
-#     }
-#     return render(request, 'blog/home.html', context)
+def home(request):
+    context = {
+        'posts': Post.objects.all()
+    }
+    name = request.GET.get('name')
+    distance = request.GET.get('distance')
+    elevation = request.GET.get('name')
+    if name:
+        context['posts'] = Post.objects.filter(title__icontains=name)
+        return render(request, 'blog/post_list.html', context)
+    if distance:
+        context['posts'] = Post.objects.filter(distance__gt=Distance(km=distance))
+        return render(request, 'blog/post_list.html', context)
+    if elevation:
+        context['posts'] = Post.objects.filter(distance__gt=Distance(m=elevation))
+        return render(request, 'blog/post_list.html', context)
 
-# def detail(request, post_id):
-#     post = get_object_or_404(Post, id=post_id)
-#     return render(request, 'blog/detail.html', {'post': post})
+    return render(request, 'blog/post_list.html', context)
+
 
 @login_required(login_url='blog:login')
 @allowed_users(allowed_roles=['adventurers', 'admin'])
 def adventurer(request, pk_adventurer):
     adventurer = Adventurer.objects.get(id=pk_adventurer)
-    posts = adventurer.post_set.all()
+    # posts = adventurer.post_set.all()
+    posts = Post.objects.filter(author=adventurer.user)
     posts_count = posts.count()
 
     context = {'adventurer': adventurer, 'posts': posts, 'posts_count': posts_count}
@@ -103,15 +117,20 @@ def account_settings(request):
     return render(request, 'blog/adventurer_settings.html', context)
 
 
-class PostListView(ListView):
-    queryset = Post.objects.all()
+def detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    photos = PostImage.objects.filter(post=post)
+    return render(request, 'blog/detail.html', {
+        'post': post,
+        'photos': photos
+    })
 
 
-class PostDetailView(DetailView):
+# def post_create(request):
+#     form = CreatePostForm(request.POST or None)
+#     context = {"form": form, }
 
-    def get_object(self):
-        id_ = self.kwargs.get("post_id")
-        return get_object_or_404(Post, id=id_)
+#     return render(request, 'blog/post_form.html', context)
 
 
 class PostCreateView(CreateView):
@@ -119,11 +138,30 @@ class PostCreateView(CreateView):
     form_class = CreatePostForm
     queryset = Post.objects.all()
 
+    def form_valid(self, form, coordinates, *args, **kwargs):
+        response = super().form_valid(form=form, *args, **kwargs)
+        self.object.lat = coordinates[0]
+        self.object.lon = coordinates[1]
+        """If the form is valid, save the associated model."""
+        self.object = form.save()
+        return response
+
+    def post(self, request, *args, **kwargs):
+        form = CreatePostForm(request.POST, request.FILES)
+        images = request.FILES.getlist('image_field')
+        if form.is_valid():
+            gpx = str(form.cleaned_data.get('file').read(1024))
+            coordinates = get_location(gpx)
+            
+            return self.form_valid(form=form, coordinates=coordinates)
+        else:
+            return self.form_invalid(form=form)
+
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'distance', 'elevation', 'description']
+        fields = ['title', 'distance', 'elevation', 'description', 'image']
 
 
 @login_required(login_url='login')
@@ -131,8 +169,8 @@ class PostForm(forms.ModelForm):
 def edit_post(request, post_id):
     post = Post.objects.get(id=post_id)
     adventurer = request.user.adventurer
-
-    if not adventurer.post_set.filter(id=post_id):
+    # if not adventurer.post_set.filter(id=post_id):
+    if not Post.objects.filter(author=adventurer.user):
         return redirect('blog-home')
 
     if request.method == 'POST':

@@ -1,6 +1,6 @@
 {% extends 'blog/base.html' %}
 {% block content %}
-    {% for post in object_list %}
+    {% for post in posts %}
         <article class="media content-section">
             <div class="media-body">
             <div class="article-metadata">
@@ -8,9 +8,13 @@
                 <small class="text-muted">{{ post.date_posted }}</small>
             </div>
             <h2><a class="article-title" href="{% url 'detail' post.id %}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.description }}</p>
+            <p class="article-description">{{ post.description }}</p>
             <p class="article-content">Distance = {{ post.distance }}</p>
             <p class="article-content">Elevation gain = {{ post.elevation }}</p>
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class="article-img">
+            {% endif %}
+            
             </div>
         </article>
     {% endfor %}
