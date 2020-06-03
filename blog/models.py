@@ -23,6 +23,8 @@ class Post(models.Model):
     title = models.CharField(max_length=64)
     distance = MeasurementField(measurement=Distance)
     elevation = MeasurementField(measurement=Distance)
+    lat = models.FloatField(null=True)
+    lon = models.FloatField(null=True)
     description = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)

@@ -19,6 +19,7 @@ from .models import Post, Adventurer, PostImage
 from django.contrib import messages
 
 from measurement.measures import Distance
+from coordinates import get_location
 
 
 def register_page(request):
@@ -125,21 +126,36 @@ def detail(request, post_id):
     })
 
 
-# class PostListView(ListView):
-#     queryset = Post.objects.all()
+# def post_create(request):
+#     form = CreatePostForm(request.POST or None)
+#     context = {"form": form, }
 
-
-# class PostDetailView(DetailView):
-
-#     def get_object(self):
-#         id_ = self.kwargs.get("post_id")
-#         return get_object_or_404(Post, id=id_)
+#     return render(request, 'blog/post_form.html', context)
 
 
 class PostCreateView(CreateView):
     model = Post
     form_class = CreatePostForm
     queryset = Post.objects.all()
+
+    def form_valid(self, form, coordinates, *args, **kwargs):
+        response = super().form_valid(form=form, *args, **kwargs)
+        self.object.lat = coordinates[0]
+        self.object.lon = coordinates[1]
+        """If the form is valid, save the associated model."""
+        self.object = form.save()
+        return response
+
+    def post(self, request, *args, **kwargs):
+        form = CreatePostForm(request.POST, request.FILES)
+        images = request.FILES.getlist('image_field')
+        if form.is_valid():
+            gpx = str(form.cleaned_data.get('file').read(1024))
+            coordinates = get_location(gpx)
+            
+            return self.form_valid(form=form, coordinates=coordinates)
+        else:
+            return self.form_invalid(form=form)
 
 
 class PostForm(forms.ModelForm):

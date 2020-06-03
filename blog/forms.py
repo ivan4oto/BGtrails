@@ -21,9 +21,11 @@ class AdventurerForm(forms.ModelForm):
 
 
 class CreatePostForm(forms.ModelForm):
+    image_field = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
     class Meta:
         model = Post
-        fields = ['title', 'distance', 'elevation', 'description', 'file', 'image', 'author']
+        fields = ['title', 'distance', 'elevation', 'description', 'file', 'author']
 
 # class CreatePostForm(forms.Form):
 #     title = forms.CharField(initial='My New Hike')

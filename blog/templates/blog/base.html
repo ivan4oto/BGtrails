@@ -43,7 +43,7 @@
                         <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                     {% endif %}
                     {% if  user.is_authenticated %}
-                        <a class="nav-item nav-link" href="{% url 'adventurer' user.adventurer.id %}">My blogs</a>
+                        <a class="nav-item nav-link" href="{% url 'adventurer' user.id %}">My blogs</a>
                         <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     {% endif %}
                 </div>
