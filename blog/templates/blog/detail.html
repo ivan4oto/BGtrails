@@ -6,14 +6,16 @@
         <h2>{{ post.title }}</h2>
         <p>Distance: {{ post.distance }}</p>
         <p>Elevation: {{ post.elevation }}</p>
-        <td><a href="{{ post.file.url }}" download>{{ post.file }}</a></td>
         <p>
-        {% for photo in photos %}
-            <img class="article-photo" src={{ photo.image.url }}>
-        {% endfor %}
+            <td>><a href="http://maps.google.com/?q={{ post.lat }} {{ post.lon }}"> Starting Point </a></td>
+        </p>
+        <p>
+            <td><a href="{{ post.file.url }}" download> GPX Track </a></td>
+        </p>
+        <p>
         </p>    
         {% if post.image %}
-            <p><img class="article-photo" src={{ post.image.url }}></p>
+        <img src='{{ post.image.url }}' class="article-photo" />
         {% endif %}
     </div>
 </article>

@@ -147,6 +147,7 @@ class PostCreateView(CreateView):
         return response
 
     def post(self, request, *args, **kwargs):
+        print(request)
         form = CreatePostForm(request.POST, request.FILES)
         images = request.FILES.getlist('image_field')
         if form.is_valid():
@@ -174,14 +175,14 @@ def edit_post(request, post_id):
         return redirect('blog-home')
 
     if request.method == 'POST':
-        form = PostForm(data=request.POST, instance=post)
+        form = CreatePostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             form.save()
             return redirect(reverse('blog-home'))
         else:
             return render(request, 'blog/edit_post.html', {'post': post, 'form': form})
     else:
-        form = PostForm(instance=post)
+        form = CreatePostForm(instance=post)
         return render(request, 'blog/edit_post.html', {'post': post, 'form': form})
 
 
