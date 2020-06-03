@@ -13,7 +13,7 @@
         {% endfor %}
         </p>    
         {% if post.image %}
-        <p><img src="{{ post.image.url }}"></p>
+        <p><img class="article-photo" src={{ post.image.url }}></p>
         {% endif %}
     </div>
 </article>
