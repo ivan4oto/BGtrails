@@ -23,7 +23,7 @@ class AdventurerForm(forms.ModelForm):
 class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'distance', 'elevation', 'description', 'file', 'image']
+        fields = ['title', 'distance', 'elevation', 'description', 'file', 'image', 'author']
 
 # class CreatePostForm(forms.Form):
 #     title = forms.CharField(initial='My New Hike')

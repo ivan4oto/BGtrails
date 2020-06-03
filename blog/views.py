@@ -93,7 +93,8 @@ def home(request):
 @allowed_users(allowed_roles=['adventurers', 'admin'])
 def adventurer(request, pk_adventurer):
     adventurer = Adventurer.objects.get(id=pk_adventurer)
-    posts = adventurer.post_set.all()
+    # posts = adventurer.post_set.all()
+    posts = Post.objects.filter(author=adventurer.user)
     posts_count = posts.count()
 
     context = {'adventurer': adventurer, 'posts': posts, 'posts_count': posts_count}
@@ -152,8 +153,8 @@ class PostForm(forms.ModelForm):
 def edit_post(request, post_id):
     post = Post.objects.get(id=post_id)
     adventurer = request.user.adventurer
-
-    if not adventurer.post_set.filter(id=post_id):
+    # if not adventurer.post_set.filter(id=post_id):
+    if not Post.objects.filter(author=adventurer.user):
         return redirect('blog-home')
 
     if request.method == 'POST':
