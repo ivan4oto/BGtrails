@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django import forms
 from django.contrib.auth.models import User, Group
 from django.db import models
 from django.utils import timezone
@@ -27,7 +26,9 @@ class Post(models.Model):
     lon = models.FloatField(null=True)
     description = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    want_go = models.ManyToManyField(Adventurer, related_name='want_go_adventurer_set')
+    been_there = models.ManyToManyField(Adventurer, related_name='been_there_adventurer_set')
+    author = models.ForeignKey(Adventurer, null=True, on_delete=models.SET_NULL, related_name='Adventurer')
     file = models.FileField()
     image = models.ImageField(blank=True)
 
@@ -44,3 +45,23 @@ class PostImage(models.Model):
 
     def __str__(self):
         return self.post.title
+
+
+CHOICES = [
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5)
+]
+
+
+class Rate(models.Model):
+    is_visited = models.BooleanField(default=False, null=True)
+    rate = models.IntegerField(choices=CHOICES, null=True)
+    comments = models.TextField(null=True)
+    author = models.ForeignKey(Adventurer, null=True, on_delete=models.SET_NULL)
+    post = models.ForeignKey(Post, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.rate
