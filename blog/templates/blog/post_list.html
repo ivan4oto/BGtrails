@@ -8,6 +8,7 @@
                     {% if  user.is_authenticated %}
                         <a class="mr-2" href="{% url 'rate' post.id %}">  rate</a>
                     {% endif %}
+                    <a class="mr-2" href="{% url 'reviews' post.id %}">  reviews</a>
                     <small class="text-muted">{{ post.date_posted }}</small>
                 </div>
                 <h2><a class="article-title" href="{% url 'detail' post.id %}">{{ post.title }}</a></h2>

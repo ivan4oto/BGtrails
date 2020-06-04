@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import (
@@ -13,7 +14,7 @@ from measurement.measures import Distance
 from coordinates import get_location
 from .decorators import allowed_users
 from .forms import CreateUserForm, CreatePostForm, AdventurerForm, RateForm
-from .models import Post, Adventurer, PostImage
+from .models import Post, Adventurer, PostImage, Rate
 
 
 def register_page(request):
@@ -193,6 +194,11 @@ def rate(request, post_id):
     post = Post.objects.get(id=post_id)
     adventurer = request.user.adventurer
 
+    rate_already = Rate.objects.filter(post_id=post_id).filter(author=adventurer).count()
+    if rate_already != 0:
+        messages.success(request, 'You already rate this post!!')
+        return redirect(reverse('blog-home'))
+
     if request.method == 'POST':
         form = RateForm(request.POST)
         if form.is_valid():
@@ -256,3 +262,15 @@ def remove_from_wanted(request, post_id):
     posts.want_go.remove(adventurer)
 
     return redirect('want-go')
+
+
+def reviews(request, post_id):
+    post = Post.objects.filter(id=post_id).first()
+    count_wand_to_go = post.want_go.count()
+    count_been_there = post.been_there.count()
+    rates = Rate.objects.filter(post_id=post_id)
+    average = rates.all().aggregate(Avg('rate'))
+
+    context = {'rates': rates, 'average': average['rate__avg'], 'been_there': count_been_there,
+               'want_go': count_wand_to_go}
+    return render(request, 'blog/review.html', context)
