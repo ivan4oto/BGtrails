@@ -3,14 +3,14 @@
     <article class="media content-section">
         <div class="media-body">
             {% if  object.author == user.adventurer %}
-                <a href="{% url 'update' post.id %}">Edit</a>
+                <p><a href="{% url 'update' post.id %}">Edit</a></p>
             {% endif %}
             {#            <a href="{% url 'update' post.id %}">Edit</a>#}
             {% if not post in user.adventurer.want_go_adventurer_set %}
-                <a href="{% url 'add-post' post.id %}">Want to go!!!</a>
+               <p> <a href="{% url 'add-post' post.id %}">Want to go!!!</a></p>
             {% endif %}
             {% if not post in user.adventurer.been_there_adventurer_set %}
-                <a href="{% url 'add_been_there' post.id %}">Already been there!!!</a>
+               <p> <a href="{% url 'add_been_there' post.id %}">Already been there!!!</a></p>
             {% endif %}
             <h2>{{ post.title }}</h2>
             <p>Distance: {{ post.distance }}</p>

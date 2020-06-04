@@ -71,7 +71,7 @@ def home(request):
     }
     name = request.GET.get('name')
     distance = request.GET.get('distance')
-    elevation = request.GET.get('name')
+    elevation = request.GET.get('elevation')
     u_lat = request.GET.get('lat')
     u_lon = request.GET.get('lon')
     radius = request.GET.get('radius')
@@ -90,7 +90,7 @@ def home(request):
         context['posts'] = Post.objects.filter(distance__gt=Distance(km=distance))
         return render(request, 'blog/post_list.html', context)
     if elevation:
-        context['posts'] = Post.objects.filter(distance__gt=Distance(m=elevation))
+        context['posts'] = Post.objects.filter(elevation__gt=Distance(m=elevation))
         return render(request, 'blog/post_list.html', context)
 
     return render(request, 'blog/post_list.html', context)
