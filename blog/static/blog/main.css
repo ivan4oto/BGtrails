@@ -59,8 +59,8 @@ body {
     margin-bottom: 1em ;
   }
   .article-img {
-    height: 300px;
-    width: 300px;
+    max-width:200px;
+    max-height:200px;
     margin-top: 1em ;
     margin-bottom: 1em ;
     margin-right: 16px;
@@ -92,8 +92,8 @@ body {
   }
   
   .account-img {
-    height: 125px;
-    width: 125px;
+    max-width:200px;
+    max-height:200px;
     margin-right: 20px;
     margin-bottom: 16px;
   }

@@ -19,19 +19,12 @@ class AdventurerForm(forms.ModelForm):
 
 
 class CreatePostForm(forms.ModelForm):
-    image_field = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+    # image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
 
     class Meta:
         model = Post
-        fields = ['title', 'distance', 'elevation', 'description', 'file', 'author']
+        fields = ['title', 'distance', 'elevation', 'description', 'file', 'author', 'image']
 
-
-# class CreatePostForm(forms.Form):
-#     title = forms.CharField(initial='My New Hike')
-#     distance = MeasurementField(measurement=Distance)
-#     elevation = MeasurementField(measurement=Distance)
-#     description = forms.Textarea()
-#     file = forms.FileField(required=True)
 
 class RateForm(forms.ModelForm):
     class Meta:

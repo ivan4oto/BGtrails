@@ -15,7 +15,12 @@
             <h2>{{ post.title }}</h2>
             <p>Distance: {{ post.distance }}</p>
             <p>Elevation: {{ post.elevation }}</p>
-            <td><a href="{{ post.file.url }}" download>{{ post.file }}</a></td>
+            <p>
+                <td>><a href="http://maps.google.com/?q={{ post.lat }} {{ post.lon }}"> Starting Point </a></td>
+            </p>
+            <p>
+                <td><a href="{{ post.file.url }}" download> GPX Track </a></td>
+            </p>
             <p>
                 {% for photo in photos %}
                     <img class="article-photo" src={{ photo.image.url }}>

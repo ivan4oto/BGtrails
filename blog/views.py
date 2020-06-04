@@ -10,7 +10,7 @@ from django.views.generic import (
 )
 from measurement.measures import Distance
 
-from coordinates import get_location
+from coordinates import get_location, get_distance
 from .decorators import allowed_users
 from .forms import CreateUserForm, CreatePostForm, AdventurerForm, RateForm
 from .models import Post, Adventurer, PostImage
@@ -71,6 +71,17 @@ def home(request):
     name = request.GET.get('name')
     distance = request.GET.get('distance')
     elevation = request.GET.get('name')
+    u_lat = request.GET.get('lat')
+    u_lon = request.GET.get('lon')
+    radius = request.GET.get('radius')
+    print(u_lat, u_lon, radius)
+
+    if radius and u_lat and u_lon:
+        inrange_trails = [post.id for post in Post.objects.all() if post.in_range((u_lat, u_lon, ), radius)]
+        el_query = Post.objects.filter(id__in=inrange_trails)
+
+        context['posts'] = el_query
+        return render(request, 'blog/post_list.html', context)
     if name:
         context['posts'] = Post.objects.filter(title__icontains=name)
         return render(request, 'blog/post_list.html', context)
@@ -144,6 +155,7 @@ class PostCreateView(CreateView):
         return response
 
     def post(self, request, *args, **kwargs):
+        print(request)
         form = CreatePostForm(request.POST, request.FILES)
         images = request.FILES.getlist('image_field')
         if form.is_valid():
@@ -171,14 +183,14 @@ def edit_post(request, post_id):
         return redirect('blog-home')
 
     if request.method == 'POST':
-        form = PostForm(data=request.POST, instance=post)
+        form = CreatePostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             form.save()
             return redirect(reverse('blog-home'))
         else:
             return render(request, 'blog/edit_post.html', {'post': post, 'form': form})
     else:
-        form = PostForm(instance=post)
+        form = CreatePostForm(instance=post)
         return render(request, 'blog/edit_post.html', {'post': post, 'form': form})
 
 

@@ -5,6 +5,7 @@ from django.utils import timezone
 from django_measurement.models import MeasurementField
 from measurement.measures import Distance
 from django.urls import reverse
+from coordinates import get_distance
 
 
 class Adventurer(models.Model):
@@ -31,6 +32,10 @@ class Post(models.Model):
     author = models.ForeignKey(Adventurer, null=True, on_delete=models.SET_NULL, related_name='Adventurer')
     file = models.FileField()
     image = models.ImageField(blank=True)
+
+    def in_range(self, coords, range_km):
+        r = get_distance((self.lat, self.lon, ), (float(coords[0]), float(coords[1])))
+        return r <= float(range_km)
 
     def get_absolute_url(self):
         return reverse("detail", kwargs={'post_id': self.id})
