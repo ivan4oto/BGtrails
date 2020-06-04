@@ -10,7 +10,7 @@ from django.views.generic import (
 )
 from measurement.measures import Distance
 
-from coordinates import get_location
+from coordinates import get_location, get_distance
 from .decorators import allowed_users
 from .forms import CreateUserForm, CreatePostForm, AdventurerForm, RateForm
 from .models import Post, Adventurer, PostImage
@@ -71,6 +71,17 @@ def home(request):
     name = request.GET.get('name')
     distance = request.GET.get('distance')
     elevation = request.GET.get('name')
+    u_lat = request.GET.get('lat')
+    u_lon = request.GET.get('lon')
+    radius = request.GET.get('radius')
+    print(u_lat, u_lon, radius)
+
+    if radius and u_lat and u_lon:
+        inrange_trails = [post.id for post in Post.objects.all() if post.in_range((u_lat, u_lon, ), radius)]
+        el_query = Post.objects.filter(id__in=inrange_trails)
+
+        context['posts'] = el_query
+        return render(request, 'blog/post_list.html', context)
     if name:
         context['posts'] = Post.objects.filter(title__icontains=name)
         return render(request, 'blog/post_list.html', context)

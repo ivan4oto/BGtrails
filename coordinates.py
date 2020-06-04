@@ -1,19 +1,18 @@
 import sys
+import geopy.distance
 
 
-def get_location(file):
-    # f = open(file)
-
-    # def read1k():
-    #     return f.read(1024)
-
-    # for piece in iter(read1k, ''):
-    piece = file.split('<')
+def get_location(gpxdata):
+    piece = gpxdata.split('<')
     for p in piece:
         if p.startswith('trkpt'):
             p = p.split('"')
             lat, long = float(p[1]), float(p[-2])
             return (lat, long)
+
+
+def get_distance(user_coords, trail_coords):
+    return geopy.distance.vincenty(user_coords, trail_coords).km
 
 
 def main():

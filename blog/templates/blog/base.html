@@ -81,11 +81,20 @@
                 <p class='text-muted'>Enter a radius to display nearby trails:
                 <ul class="list-group">
                     <form method="GET" action=''>
-                        <input type='text' name='location' onclick='getLocation()' placeholder = 'km'/>
+                        <input type='text' name='radius' onclick='' placeholder = 'km'/>
+                        <input type="hidden" id="lat" name="lat">
+                        <input type="hidden" id="lon" name="lon">
                         <p>
                             <input type='submit' value='Search'/>
                         </p>
                     </form>
+
+                    <p>
+                        <button id = "find-me" name='location'>Show my location</button><br/>
+                        <p id = "status"></p>
+                        <a id = "map-link" target="_blank"></a>
+                    </p>
+                    
                 </ul>
                 </p>
             </div>
@@ -112,6 +121,9 @@
             const latitude  = position.coords.latitude;
             const longitude = position.coords.longitude;
 
+            document.getElementById("lat").value = latitude;
+            document.getElementById("lon").value = longitude;
+
             status.textContent = '';
             mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
             mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
@@ -129,7 +141,6 @@
         }
 
     }
-
     document.querySelector('#find-me').addEventListener('click', geoFindMe);
 </script>
 
