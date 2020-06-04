@@ -26,10 +26,3 @@ class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'distance', 'elevation', 'description', 'file', 'author', 'image']
-
-# class CreatePostForm(forms.Form):
-#     title = forms.CharField(initial='My New Hike')
-#     distance = MeasurementField(measurement=Distance)
-#     elevation = MeasurementField(measurement=Distance)
-#     description = forms.Textarea()
-#     file = forms.FileField(required=True)

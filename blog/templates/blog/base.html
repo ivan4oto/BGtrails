@@ -73,12 +73,63 @@
                 </ul>
                 </p>
             </div>
+            <div class="content-section">
+                <h3>Search Nearby Trails</h3>
+                <p class='text-muted'>Enter a radius to display nearby trails:
+                <ul class="list-group">
+                    <form method="GET" action=''>
+                        <input type='text' name='location' onclick='getLocation()' placeholder = 'km'/>
+                        <p>
+                            <input type='submit' value='Search'/>
+                        </p>
+                    </form>
+                </ul>
+                </p>
+            </div>
         </div>
+        
+
     </div>
 </main>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+
+<script>
+    function geoFindMe() {
+
+        const status = document.querySelector('#status');
+        const mapLink = document.querySelector('#map-link');
+
+        mapLink.href = '';
+        mapLink.textContent = '';
+
+        function success(position) {
+            const latitude  = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            status.textContent = '';
+            mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+            mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+        }
+
+        function error() {
+            status.textContent = 'Unable to retrieve your location';
+        }
+
+        if(!navigator.geolocation) {
+            status.textContent = 'Geolocation is not supported by your browser';
+        } else {
+            status.textContent = 'Locating…';
+            navigator.geolocation.getCurrentPosition(success, error);
+        }
+
+    }
+
+    document.querySelector('#find-me').addEventListener('click', geoFindMe);
+</script>
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
