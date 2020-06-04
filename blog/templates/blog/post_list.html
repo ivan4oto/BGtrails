@@ -3,18 +3,21 @@
     {% for post in posts %}
         <article class="media content-section">
             <div class="media-body">
-            <div class="article-metadata">
-                <a class="mr-2" href="#">{{ post.author }}</a>
-                <small class="text-muted">{{ post.date_posted }}</small>
-            </div>
-            <h2><a class="article-title" href="{% url 'detail' post.id %}">{{ post.title }}</a></h2>
-            <p class="article-description">{{ post.description }}</p>
-            <p class="article-content">Distance = {{ post.distance }}</p>
-            <p class="article-content">Elevation gain = {{ post.elevation }}</p>
-            {% if post.image %}
-            <img src="{{ post.image.url }}" class="article-img">
-            {% endif %}
-            
+                <div class="article-metadata">
+                    <a class="mr-2" href="#">{{ post.author }}</a>
+                    {% if  user.is_authenticated %}
+                        <a class="mr-2" href="{% url 'rate' post.id %}">  rate</a>
+                    {% endif %}
+                    <small class="text-muted">{{ post.date_posted }}</small>
+                </div>
+                <h2><a class="article-title" href="{% url 'detail' post.id %}">{{ post.title }}</a></h2>
+                <p class="article-description">{{ post.description }}</p>
+                <p class="article-content">Distance = {{ post.distance }}</p>
+                <p class="article-content">Elevation gain = {{ post.elevation }}</p>
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" class="article-img">
+                {% endif %}
+
             </div>
         </article>
     {% endfor %}

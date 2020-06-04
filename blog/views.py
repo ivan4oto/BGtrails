@@ -1,25 +1,19 @@
+from django import forms
+from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import Group
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.views.generic import (
-    CreateView,
-    DetailView,
-    ListView,
-    UpdateView,
-    DeleteView
+    CreateView
 )
-
-from django import forms
-
-from .decorators import allowed_users
-from .forms import CreateUserForm, CreatePostForm, AdventurerForm
-from .models import Post, Adventurer, PostImage
-from django.contrib import messages
-
 from measurement.measures import Distance
+
 from coordinates import get_location
+from .decorators import allowed_users
+from .forms import CreateUserForm, CreatePostForm, AdventurerForm, RateForm
+from .models import Post, Adventurer, PostImage
 
 
 def register_page(request):
@@ -94,8 +88,11 @@ def home(request):
 @allowed_users(allowed_roles=['adventurers', 'admin'])
 def adventurer(request, pk_adventurer):
     adventurer = Adventurer.objects.get(id=pk_adventurer)
-    # posts = adventurer.post_set.all()
-    posts = Post.objects.filter(author=adventurer.user)
+    """
+    vceki post e svarzan s adventurer a ne s usera(ot Django)
+    a adventurer e svarzan s usara na Django
+    """
+    posts = Post.objects.filter(author=adventurer)
     posts_count = posts.count()
 
     context = {'adventurer': adventurer, 'posts': posts, 'posts_count': posts_count}
@@ -153,7 +150,7 @@ class PostCreateView(CreateView):
         if form.is_valid():
             gpx = str(form.cleaned_data.get('file').read(1024))
             coordinates = get_location(gpx)
-            
+
             return self.form_valid(form=form, coordinates=coordinates)
         else:
             return self.form_invalid(form=form)
@@ -188,3 +185,75 @@ def edit_post(request, post_id):
 
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['adventurers', 'admin'])
+def rate(request, post_id):
+    form = RateForm()
+    post = Post.objects.get(id=post_id)
+    adventurer = request.user.adventurer
+
+    if request.method == 'POST':
+        form = RateForm(request.POST)
+        if form.is_valid():
+            rating = form.save()
+            rating.author = adventurer
+            rating.post = post
+            rating.save()
+            return redirect(reverse('blog-home'))
+
+    context = {'form': form}
+    return render(request, 'blog/rate.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['adventurers', 'admin'])
+def want_go(request):
+    adventurer = request.user.adventurer
+    posts = Post.objects.filter(want_go=adventurer)
+    posts_count = posts.count()
+
+    context = {'adventurer': adventurer, 'posts': posts, 'posts_count': posts_count}
+    return render(request, 'blog/want_go.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['adventurers', 'admin'])
+def add_post(request, post_id):
+    adventurer = request.user.adventurer
+    posts = Post.objects.filter(id=post_id)[0]
+    posts.want_go.add(adventurer)
+
+    return redirect('want-go')
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['adventurers', 'admin'])
+def went_there(request):
+    adventurer = request.user.adventurer
+    posts = Post.objects.filter(been_there=adventurer)
+    posts_count = posts.count()
+
+    context = {'adventurer': adventurer, 'posts': posts, 'posts_count': posts_count}
+    return render(request, 'blog/been_there.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['adventurers', 'admin'])
+def add_been_there(request, post_id):
+    adventurer = request.user.adventurer
+    posts = Post.objects.filter(id=post_id)[0]
+    posts.been_there.add(adventurer)
+
+    return redirect('went_there')
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['adventurers', 'admin'])
+def remove_from_wanted(request, post_id):
+    adventurer = request.user.adventurer
+    posts = Post.objects.filter(id=post_id)[0]
+    posts.want_go.remove(adventurer)
+
+    return redirect('want-go')

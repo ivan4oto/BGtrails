@@ -1,10 +1,8 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django import forms
-from .models import Post, PostImage, Adventurer
 
-from django_measurement.models import MeasurementField
-from measurement.measures import Distance
+from .models import Post, Adventurer, Rate
 
 
 class CreateUserForm(UserCreationForm):
@@ -26,3 +24,10 @@ class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'distance', 'elevation', 'description', 'file', 'author', 'image']
+
+
+class RateForm(forms.ModelForm):
+    class Meta:
+        model = Rate
+        fields = '__all__'
+        exclude = ['author', 'post']
