@@ -13,6 +13,7 @@ urlpatterns = [
     path('went_there/', views.went_there, name="went_there"),
     path('add-post/<int:post_id>/', views.add_post, name="add-post"),
     path('add_been_there/<int:post_id>/', views.add_been_there, name="add_been_there"),
+    path('reviews/<int:post_id>/', views.reviews, name="reviews"),
 
     path('adventurer/<str:pk_adventurer>/', views.adventurer, name="adventurer"),
     path('edit/', views.account_settings, name="edit"),

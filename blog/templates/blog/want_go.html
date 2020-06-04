@@ -39,7 +39,7 @@
                 <div class="media-body">
                     <div class="article-metadata">
                         <a class="mr-2" href="#">{{ post.author }}</a>
-                        <a class="mr-2" href="{% url 'remove-want' post.id %}">  remove from want to go</a>
+                        <a class="mr-2" href="{% url 'remove-want' post.id %}">  do not want to go anymore</a>
                         <small class="text-muted">{{ post.date_posted }}</small>
                     </div>
                     <h2><a class="article-title" href="{% url 'detail' post.id %}">{{ post.title }}</a></h2>
