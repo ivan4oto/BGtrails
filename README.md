@@ -26,6 +26,10 @@ source post/bin/activate
 ```
  pip install -r requirements.txt
 ```
+* Stage all models for migrations
+```
+ python3 manage.py makemigrations
+```
 * Apply all database migrations.Currently the default database is SQLite.
 ```
  python3 manage.py migrate
