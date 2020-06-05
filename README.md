@@ -7,7 +7,7 @@ A collection of hikes in the Bulgarian mountains. All hikes include '.gpx' navig
 ```
 git clone https://github.com/ivan4oto/BGtrails.git
 ```
-* Enter the root file fo the project
+* Enter the root file of the project
 ```
 cd BGtrails/
 ```
