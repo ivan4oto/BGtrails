@@ -7,14 +7,14 @@
             {% endif %}
             {#            <a href="{% url 'update' post.id %}">Edit</a>#}
             {% if not post in user.adventurer.want_go_adventurer_set %}
-               <p> <a href="{% url 'add-post' post.id %}">Want to go!!!</a></p>
+               <p> <a href="{% url 'add-post' post.id %}">Add to wish list</a></p>
             {% endif %}
             {% if not post in user.adventurer.been_there_adventurer_set %}
-               <p> <a href="{% url 'add_been_there' post.id %}">Already been there!!!</a></p>
+               <p> <a href="{% url 'add_been_there' post.id %}">Mark as visited</a></p>
             {% endif %}
             <h2>{{ post.title }}</h2>
-            <p>Distance: {{ post.distance }}</p>
-            <p>Elevation: {{ post.elevation }}</p>
+            <p>Distance: <b>{{ post.distance.km }} km</b></p>
+            <p>Elevation: <b>{{ post.elevation }}</b></p>
             <p>
                 <td>><a href="http://maps.google.com/?q={{ post.lat }} {{ post.lon }}"> Starting Point </a></td>
             </p>

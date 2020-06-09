@@ -13,8 +13,8 @@
                 </div>
                 <h2><a class="article-title" href="{% url 'detail' post.id %}">{{ post.title }}</a></h2>
                 <p class="article-description">{{ post.description }}</p>
-                <p class="article-content">Distance = {{ post.distance }}</p>
-                <p class="article-content">Elevation gain = {{ post.elevation }}</p>
+                <p class="article-content">Distance <b>{{ post.distance.km }} km</b></p>
+                <p class="article-content">Elevation gain <b>{{ post.elevation }}</b></p>
                 {% if post.image %}
                     <img src="{{ post.image.url }}" class="article-img">
                 {% endif %}
