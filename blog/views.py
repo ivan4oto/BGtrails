@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.views.generic.edit import FormView
 from django.views.generic import (
     CreateView
 )
@@ -13,7 +14,7 @@ from measurement.measures import Distance
 
 from coordinates import get_location, get_distance
 from .decorators import allowed_users
-from .forms import CreateUserForm, CreatePostForm, AdventurerForm, RateForm
+from .forms import CreateUserForm, CreatePostForm, AdventurerForm, RateForm, ImagePostForm
 from .models import Post, Adventurer, PostImage, Rate
 
 
@@ -135,11 +136,46 @@ def detail(request, post_id):
     })
 
 
-# def post_create(request):
-#     form = CreatePostForm(request.POST or None)
-#     context = {"form": form, }
+# def upload_image_view(request):
+#     user = request.user
+#     print(request)
+#     if request.method == 'POST':
+#         file_form = ImagePostForm(request.POST, request.FILES)
+#         files = request.FILES.getlist('image') #field name in model
+#         if file_form.is_valid():
+#             feed_instance = form.save(commit=False)
+#             feed_instance.user = user
+#             feed_instance.save()
+#             for f in files:
+#                 file_instance = FeedFile(file=f, feed=feed_instance)
+#                 file_instance.save()
+#     else:
+#         form = FeedModelForm()
+#         file_form = FileModelForm()
 
-#     return render(request, 'blog/post_form.html', context)
+
+class ImageFieldView(FormView):
+    model = PostImage
+    form_class = ImagePostForm
+    template_name = 'blog/add_photos.html'
+    success_url = reverse_lazy('blog-home')
+
+    def post(self, request, *args, **kwargs):
+        print(request.FILES, '<---- REQUST FILES')
+        print(request.POST, '<---- REQUST POST')
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        files = request.FILES.getlist('image')
+        print(files, 'Files <----')
+        if form.is_valid():
+            post_id = int(request.build_absolute_uri('?').split('/')[-2])
+            for f in files:
+                post_instance = Post.objects.get(pk=post_id)
+                image_instance = PostImage(post=post_instance, image=f)
+                image_instance.save()
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class PostCreateView(CreateView):
@@ -156,7 +192,6 @@ class PostCreateView(CreateView):
         return response
 
     def post(self, request, *args, **kwargs):
-        print(request)
         form = CreatePostForm(request.POST, request.FILES)
         images = request.FILES.getlist('image_field')
         if form.is_valid():
@@ -180,7 +215,8 @@ def edit_post(request, post_id):
     post = Post.objects.get(id=post_id)
     adventurer = request.user.adventurer
     # if not adventurer.post_set.filter(id=post_id):
-    if not Post.objects.filter(author=adventurer.user):
+    print(type(adventurer), 'testiiing <---')
+    if not Post.objects.filter(author=adventurer):
         return redirect('blog-home')
 
     if request.method == 'POST':

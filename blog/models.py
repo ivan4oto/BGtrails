@@ -29,7 +29,7 @@ class Post(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     want_go = models.ManyToManyField(Adventurer, related_name='want_go_adventurer_set')
     been_there = models.ManyToManyField(Adventurer, related_name='been_there_adventurer_set')
-    author = models.ForeignKey(Adventurer, null=True, on_delete=models.SET_NULL, related_name='Adventurer')
+    author = models.ForeignKey(Adventurer, null=True, on_delete=models.CASCADE, related_name='Adventurer')
     file = models.FileField()
     image = models.ImageField(blank=True)
 
