@@ -20,5 +20,6 @@ urlpatterns = [
     path('create/', view=views.PostCreateView.as_view(), name='create'),
     path('about/', view=views.about, name='blog-about'),
     path('update/<int:post_id>/', views.edit_post, name='update'),
+    path('add-photos/<int:post_id>/', views.ImageFieldView.as_view(), name='add-photos'),
     path('<int:post_id>/', views.detail, name='detail'),
 ]

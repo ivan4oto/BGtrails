@@ -9,8 +9,8 @@
             </div>
             <h2><a class="article-title" href="{% url 'detail' post.id %}">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.description }}</p>
-            <p class="article-content">Distance = {{ post.distance }}</p>
-            <p class="article-content">Elevation gain = {{ post.elevation }}</p>
+            <p class="article-content">Distance {{ post.distance }}</p>
+            <p class="article-content">Elevation gain {{ post.elevation }}</p>
             </div>
         </article>
     {% endfor %}

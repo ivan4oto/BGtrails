@@ -1,8 +1,9 @@
 from django import forms
+from django.forms import ClearableFileInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Post, Adventurer, Rate
+from .models import Post, Adventurer, Rate, PostImage
 
 
 class CreateUserForm(UserCreationForm):
@@ -16,6 +17,23 @@ class AdventurerForm(forms.ModelForm):
         model = Adventurer
         fields = '__all__'
         exclude = ['user']
+
+
+# class ImagePostForm(forms.ModelForm):
+#     class Meta:
+#         model = PostImage
+#         fields = ['image']
+#         widgets = {
+#             'image': ClearableFileInput(attrs={'multiple': True}),
+#         }
+
+
+class ImagePostForm(forms.ModelForm):
+    image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
+    class Meta:
+        model = PostImage
+        fields = ['image']
 
 
 class CreatePostForm(forms.ModelForm):
