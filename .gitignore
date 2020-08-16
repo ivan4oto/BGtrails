@@ -83,10 +83,13 @@ celerybeat-schedule
 .env
 
 # virtualenv
+Scripts/
+share/
 .venv
 venv/
 ENV/
 .vscode
+pyvenv.cfg
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -110,3 +113,6 @@ media/
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
+
+# dependancies
+Lib/

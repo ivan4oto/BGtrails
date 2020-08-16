@@ -66,6 +66,11 @@ def logout_user(request):
     return redirect('/blog/')
 
 
+def not_logged_in(request):
+    return render(request, 'blog/not_logged_in.html')
+    
+
+
 def home(request):
     context = {
         'posts': Post.objects.all()
@@ -183,24 +188,27 @@ class PostCreateView(CreateView):
     form_class = CreatePostForm
     queryset = Post.objects.all()
 
-    def form_valid(self, form, coordinates, *args, **kwargs):
+    def form_valid(self, form, coordinates, username, *args, **kwargs):
         response = super().form_valid(form=form, *args, **kwargs)
         self.object.lat = coordinates[0]
         self.object.lon = coordinates[1]
+        self.object.author = username
         """If the form is valid, save the associated model."""
         self.object = form.save()
         return response
 
     def post(self, request, *args, **kwargs):
-        form = CreatePostForm(request.POST, request.FILES)
-        images = request.FILES.getlist('image_field')
-        if form.is_valid():
-            gpx = str(form.cleaned_data.get('file').read(1024))
-            coordinates = get_location(gpx)
-
-            return self.form_valid(form=form, coordinates=coordinates)
+        if request.user.is_authenticated:
+            form = CreatePostForm(request.POST, request.FILES)
+            images = request.FILES.getlist('image_field')
+            if form.is_valid():
+                gpx = str(form.cleaned_data.get('file').read(1024))
+                coordinates = get_location(gpx)
+                return self.form_valid(form=form, coordinates=coordinates, username=request.user.adventurer)
+            else:
+                return self.form_invalid(form=form)
         else:
-            return self.form_invalid(form=form)
+            return redirect(reverse('not-logged-in'))
 
 
 class PostForm(forms.ModelForm):

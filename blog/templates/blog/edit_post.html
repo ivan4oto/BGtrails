@@ -1,9 +1,10 @@
-Edit: {{ post }}
-
+{% extends 'blog/base.html' %}
+{% block content %}
 <form method="POST" enctype="multipart/form-data"> {% csrf_token %}
     {% csrf_token %}
-    {{ form.as_p }}
+    {% load bootstrap %}
+    {{ form|bootstrap }}
     <input type='submit' value='Edit' />
 </form>
-
+{% endblock %}
 

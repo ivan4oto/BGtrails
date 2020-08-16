@@ -1,7 +1,10 @@
 {% extends 'blog/base.html' %}
 {% block content %}
+{% load bootstrap %}
 <form action='.' method='POST' enctype="multipart/form-data"> {% csrf_token %}
-    {{ form.as_p }}
-<input type='submit' value='Save' />
+    <div class="form-group">
+        {{ form|bootstrap }}
+    </div>
+    <input type='submit' value='Save' />
 </form>
 {% endblock %}
