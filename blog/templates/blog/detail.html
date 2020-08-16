@@ -3,27 +3,26 @@
     <article class="media content-section">
         <div class="media-body">
             {% if post.author == user.adventurer %}
-                <p><a href="{% url 'update' post.id %}"><button> Edit </button></a></p>
+                <p><a href="{% url 'update' post.id %}"><button type="button" class="btn btn-light">Edit</button></a>
             {% endif %}
-            {#            <a href="{% url 'update' post.id %}">Edit</a>#}
+            {#            <a href="{% url 'update' post.id %}"><button type="button" class="btn btn-light">Edit</button></a>#}
             {% if not post in user.adventurer.want_go_adventurer_set %}
-               <p> <a href="{% url 'add-post' post.id %}"><button>Add to wishlist</button></a></p>
+               <a href="{% url 'add-post' post.id %}"><button type="button" class="btn btn-light">Add to wishlist</button></a>
             {% endif %}
             {% if not post in user.adventurer.been_there_adventurer_set %}
-               <p> <a href="{% url 'add_been_there' post.id %}"><button>Mark as visited</button></a></p>
+               <a href="{% url 'add_been_there' post.id %}"><button type="button" class="btn btn-light">Mark as visited</button></a></p>
             {% endif %}
             <h2>{{ post.title }}</h2>
             <p>Distance: <b>{{ post.distance.km }} km</b></p>
             <p>Elevation: <b>{{ post.elevation }}</b></p>
             <p>
-                <td><a href="http://maps.google.com/?q={{ post.lat }} {{ post.lon }}"> Starting Point </a></td>
-            </p>
-            <p>
-                <td><a href="{{ post.file.url }}" download> GPX Track </a></td>
+                <td><a href="http://maps.google.com/?q={{ post.lat }} {{ post.lon }}"> <button type="button" class="btn btn-outline-success">Starting Point</button></a></td>
+            
+                <td><a href="{{ post.file.url }}" download> <button type="button" class="btn btn-outline-info">GPX Track</button> </a></td>
             </p>
             <p>
                 {% if  post.author == user.adventurer %}
-                    <td><a href="{% url 'add-photos' post.id %}"> <button>Add photos</button> </a></td>
+                    <td><a class="btn btn-primary" href="{% url 'add-photos' post.id %}" role="button">Add Photos</a></td>
                 {% endif %}
             </p>
             <p>
