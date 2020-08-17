@@ -1,5 +1,5 @@
 body {
-    background: #fafafa;
+    background: #b8cedd;
     color: #333333;
     margin-top: 5rem;
   }
@@ -75,6 +75,7 @@ body {
   }
 
   .article-metadata {
+    background-color: rgb(228, 230, 240);
     padding-bottom: 1px;
     margin-bottom: 4px;
     border-bottom: 1px solid #e3e3e3

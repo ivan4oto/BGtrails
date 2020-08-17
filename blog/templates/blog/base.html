@@ -81,17 +81,23 @@
                 <h3>Search Nearby Trails</h3>
                 <p class='text-muted'>Enter a radius to display nearby trails:
                 <ul class="list-group">
-                    <form method="GET" action=''>
+                    <form method="GET" action='' id="form1">
                         <input type='text' name='radius' onclick='' placeholder = 'km'/>
                         <input type="hidden" id="lat" name="lat">
                         <input type="hidden" id="lon" name="lon">
-                        <p>
+                        <!-- <p>
                             <input type='submit' value='Search'/>
-                        </p>
+                        </p> -->
                     </form>
+                    <div>
+                        <p>
+                            <button id = "find-me" class="btn btn-danger" name='location'>Get location</button><br/>
+                            <button class = "btn btn-primary" type="submit" form="form1" value="Submit">Search</button>
+                        </p>
+    
+                    </div>
 
                     <p>
-                        <button id = "find-me" name='location'>Show my location</button><br/>
                         <p id = "status"></p>
                         <a id = "map-link" target="_blank"></a>
                     </p>
@@ -144,6 +150,14 @@
     }
     document.querySelector('#find-me').addEventListener('click', geoFindMe);
 </script>
+
+<script>
+    let btnGetLoc = document.querySelector("#find-me");
+
+    btnGetLoc.addEventListener('click', () => btnGetLoc.style.backgroundColor='#52e365')
+    btnGetLoc.addEventListener('click', () => btnGetLoc.style.borderColor='#52e365')
+</script>
+
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
