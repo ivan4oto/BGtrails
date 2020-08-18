@@ -18,6 +18,10 @@ from .forms import CreateUserForm, CreatePostForm, AdventurerForm, RateForm, Ima
 from .models import Post, Adventurer, PostImage, Rate
 
 
+def map_page(request):
+    return render(request, 'blog/map.html')
+
+
 def register_page(request):
     if request.user.is_authenticated:
         return redirect('/blog/')
