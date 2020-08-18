@@ -70,7 +70,6 @@ def not_logged_in(request):
     return render(request, 'blog/not_logged_in.html')
     
 
-
 def home(request):
     context = {
         'posts': Post.objects.all()

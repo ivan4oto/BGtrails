@@ -5,9 +5,9 @@
             <div class="media-body">
                 <div class="article-metadata">
                     {% if  user.is_authenticated %}
-                        <a class="mr-2" href="{% url 'rate' post.id %}"><button type="button" class="btn btn-light">Rate</button></a>
+                        <a class="mr-2" href="{% url 'rate' post.id %}"><button type="button" class="btn btn-outline-primary">Rate</button></a>
                     {% endif %}
-                    <a class="mr-2" href="{% url 'reviews' post.id %}"><button type="button" class="btn btn-light">Reviews</button></a>
+                    <a class="mr-2" href="{% url 'reviews' post.id %}"><button type="button" class="btn btn-outline-info">Reviews</button></a>
                     <small class="text-muted">{{ post.date_posted }}</small>
                     <a class="mr-2" href="#">{{ post.author }}</a>
                 </div>
