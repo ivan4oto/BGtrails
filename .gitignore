@@ -105,7 +105,6 @@ pyvenv.cfg
 
 .DS_Store
 *.sqlite3
-media/
 *.pyc
 *.db
 *.pid
@@ -116,3 +115,7 @@ media/
 
 # dependancies
 Lib/
+
+# static files
+media/
+static/

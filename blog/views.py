@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import messages
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
@@ -19,7 +20,8 @@ from .models import Post, Adventurer, PostImage, Rate
 
 
 def map_page(request):
-    return render(request, 'blog/map.html')
+    url = staticfiles_storage.url('files/malyo.gpx')
+    return render(request, 'blog/map.html', context={'gpxfile': url})
 
 
 def register_page(request):
@@ -84,7 +86,6 @@ def home(request):
     u_lat = request.GET.get('lat')
     u_lon = request.GET.get('lon')
     radius = request.GET.get('radius')
-    print(u_lat, u_lon, radius)
 
     if radius and u_lat and u_lon:
         inrange_trails = [post.id for post in Post.objects.all() if post.in_range((u_lat, u_lon, ), radius)]
