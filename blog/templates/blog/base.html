@@ -26,13 +26,6 @@
         <title>Django Blog</title>
     {% endif %}
 
-    <!-- Mapbox CSS & JS  -->
-    <!-- <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
-    <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
-    <style>
-    #map { position:absolute; top:0; bottom:0; width:100%; }
-    </style> -->
-
 
 </head>
 <body>
@@ -101,16 +94,11 @@
                         <input type='text' name='radius' onclick='' placeholder = 'km'/>
                         <input type="hidden" id="lat" name="lat">
                         <input type="hidden" id="lon" name="lon">
-                        <!-- <p>
-                            <input type='submit' value='Search'/>
-                        </p> -->
                     </form>
                     <div>
                         <p>
                             <button id = "find-me" class="btn btn-danger" name='location'>Get location</button><br/>
                             <button class = "btn btn-primary" type="submit" form="form1" value="Submit">Search</button>
-                            <!-- hidden 'a' tag with the gpxfile path -->
-                            <!-- <a id="thegpx" href="{{ gpxfile }}"></a> -->
                         </p>
     
                     </div>
@@ -190,13 +178,6 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 
-<!-- 
-<script>
-    L.mapbox.accessToken = 'pk.eyJ1IjoiaXZhbjRvdG8iLCJhIjoiY2tlMGVnbzFxM3V6NDJxbXFzZmhmZ29tcyJ9.jbuxXicfoB-ygV96MaT7pQ';
-    var map = L.mapbox.map('map')
-        .setView([42.6817, 26.3229], 12)
-        .addLayer(L.mapbox.styleLayer('mapbox://styles/ivan4oto/cke12mwka0i1n19pessyuzhwv'));
-</script> -->
 
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
@@ -207,26 +188,6 @@ crossorigin=""></script>
 
 <script src="{% static 'js/leaflet.js' %}"></script>
 
-
-
-
-<!-- <script>
-    var mymap = L.map('map').setView([42.6817, 26.3229], 13);
-
-    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox://styles/ivan4oto/cke12mwka0i1n19pessyuzhwv',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoiaXZhbjRvdG8iLCJhIjoiY2tlMGVnbzFxM3V6NDJxbXFzZmhmZ29tcyJ9.jbuxXicfoB-ygV96MaT7pQ'
-}).addTo(mymap);
-
-    var gpx = '/home/ivan4oto/DjangoLearning/BGtrails/media/SlivenKutelka.gpx'; // URL to your GPX file or the GPX itself
-    new L.GPX(gpx, {async: true}).on('loaded', function(e) {
-    map.fitBounds(e.target.getBounds());
-    }).addTo(map);
-</script> -->
 
 </body>
 </html>
