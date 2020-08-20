@@ -19,9 +19,18 @@ from .forms import CreateUserForm, CreatePostForm, AdventurerForm, RateForm, Ima
 from .models import Post, Adventurer, PostImage, Rate
 
 
-def map_page(request):
+def map_page(request, post_id):
     url = staticfiles_storage.url('files/malyo.gpx')
-    return render(request, 'blog/map.html', context={'gpxfile': url})
+    post = get_object_or_404(Post, id=post_id)
+    post_gpx = staticfiles_storage.url(f'files/{post.file}')
+    lat = post.lat
+    lon = post.lon
+
+    return render(request, 'blog/map.html', context={'gpxfile': url,
+                                                     'post': post,
+                                                     'postfile': post_gpx,
+                                                     'lat': lat,
+                                                     'lon': lon})
 
 
 def register_page(request):

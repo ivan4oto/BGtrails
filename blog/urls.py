@@ -24,5 +24,5 @@ urlpatterns = [
     path('add-photos/<int:post_id>/', views.ImageFieldView.as_view(), name='add-photos'),
     path('<int:post_id>/', views.detail, name='detail'),
 
-    path('map/', views.map_page, name="map"),
+    path('map/<int:post_id>/', views.map_page, name="map"),
 ]

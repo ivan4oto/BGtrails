@@ -24,6 +24,7 @@
                 {% if  post.author == user.adventurer %}
                     <td><a class="btn btn-primary" href="{% url 'add-photos' post.id %}" role="button">Add Photos</a></td>
                 {% endif %}
+                    <td><a class="btn btn-outline-info" href="{% url 'map' post.id %}" role="button">Map</a></td>
             </p>
             <p>
                 {% for photo in photos %}
