@@ -12,9 +12,10 @@
             {% if not post in user.adventurer.been_there_adventurer_set %}
                <a href="{% url 'add_been_there' post.id %}"><button type="button" class="btn btn-light">Mark as visited</button></a></p>
             {% endif %}
-            <h2>{{ post.title }}</h2>
-            <p>Distance: <b>{{ post.distance.km }} km</b></p>
-            <p>Elevation: <b>{{ post.elevation }}</b></p>
+            <div class="post-title">
+                <h2>{{ post.title }}</h2>
+            </div>
+            <p>Distance: <b>{{ post.distance.km }} km</b>  Elevation: <b>{{ post.elevation }}</b></p>
             <p>
                 <td><a href="http://maps.google.com/?q={{ post.lat }} {{ post.lon }}"> <button type="button" class="btn btn-outline-success">Starting Point</button></a></td>
             
@@ -24,6 +25,7 @@
                 {% if  post.author == user.adventurer %}
                     <td><a class="btn btn-primary" href="{% url 'add-photos' post.id %}" role="button">Add Photos</a></td>
                 {% endif %}
+                    <td><a class="btn btn-outline-info" href="{% url 'map' post.id %}" role="button">Map</a></td>
             </p>
             <p>
                 {% for photo in photos %}

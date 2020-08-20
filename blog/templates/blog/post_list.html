@@ -11,7 +11,9 @@
                     <small class="text-muted">{{ post.date_posted }}</small>
                     <a class="mr-2" href="#">{{ post.author }}</a>
                 </div>
-                <h2><a class="article-title" href="{% url 'detail' post.id %}">{{ post.title }}</a></h2>
+                <div class="post-title">
+                    <h2><a class="article-title" href="{% url 'detail' post.id %}">{{ post.title }}</a></h2>
+                </div>
                 <p class="article-description">{{ post.description }}</p>
                 <p class="article-content">Distance <b>{{ post.distance.km }} km</b></p>
                 <p class="article-content">Elevation gain <b>{{ post.elevation }}</b></p>

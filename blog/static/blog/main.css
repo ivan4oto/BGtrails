@@ -38,7 +38,8 @@ body {
   
   .article-title {
     font-family: Helvetica, sans-serif;
-    color: #444444;
+    font-weight: bold;
+    color: #2b455c;
   }
   
   a.article-title:hover {
@@ -125,4 +126,14 @@ body {
     border-radius: 50%;
     transition: all 0.3s;
     font-size: 0.9rem;
+  }
+
+  .post-title {
+    background-color: #cae4f5;
+    padding-bottom: 1px;
+    padding-top: 5px;
+    margin-bottom: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }

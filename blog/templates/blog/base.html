@@ -11,12 +11,21 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
 
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+    
+    <style>
+        #mapid { height: 380px; }
+    </style>
 
     {% if title %}
         <title> Django Blog - {{ title }}</title>
     {% else %}
         <title>Django Blog</title>
     {% endif %}
+
 
 </head>
 <body>
@@ -85,9 +94,6 @@
                         <input type='text' name='radius' onclick='' placeholder = 'km'/>
                         <input type="hidden" id="lat" name="lat">
                         <input type="hidden" id="lon" name="lon">
-                        <!-- <p>
-                            <input type='submit' value='Search'/>
-                        </p> -->
                     </form>
                     <div>
                         <p>
@@ -109,12 +115,11 @@
         
 
     </div>
+
 </main>
 
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
-
+<!-- Geolocation JS  -->
 <script>
     function geoFindMe() {
 
@@ -156,7 +161,11 @@
 
     btnGetLoc.addEventListener('click', () => btnGetLoc.style.backgroundColor='#52e365')
     btnGetLoc.addEventListener('click', () => btnGetLoc.style.borderColor='#52e365')
+    
 </script>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -168,6 +177,17 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+crossorigin=""></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.4.0/gpx.min.js"></script> 
+
+<script src="{% static 'js/leaflet.js' %}"></script>
+
 
 </body>
 </html>
