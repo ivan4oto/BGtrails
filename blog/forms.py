@@ -41,7 +41,7 @@ class CreatePostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['title', 'distance', 'elevation', 'description', 'file', 'image']
+        fields = ['title', 'description', 'file', 'image']
 
 
 class RateForm(forms.ModelForm):

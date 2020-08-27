@@ -3,6 +3,8 @@ from math import radians, cos, sin, asin, sqrt
 import geopy.distance
 import gpxpy
 import gpxpy.gpx
+import os
+from glob import glob
 
 
 def get_location(gpxdata):
@@ -36,27 +38,33 @@ def haversine(lon1, lat1, lon2, lat2):
 
 
 def get_track_length(gpxtrack):
-    with open(gpxtrack, 'r') as gpx_file:
-        gpx = gpxpy.parse(gpx_file)
-        ele = 0
-        dist = 0
+    # gpxtrack.decode()
+    gpx = gpxpy.parse(gpxtrack)
+    ele = 0
+    dist = 0
 
-        for track in gpx.tracks:
-            for segment in track.segments:
-                for i in range(len(segment.points)-2):
-                    pointA = segment.points[i]
-                    pointB = segment.points[i+1]
-
-                    dist += haversine(pointA.longitude, pointA.latitude, pointB.longitude, pointB.latitude)
-
+    for track in gpx.tracks:
+        for segment in track.segments:
+            for i in range(len(segment.points)-2):
+                pointA = segment.points[i]
+                pointB = segment.points[i+1]
+                dist += haversine(pointA.longitude, pointA.latitude, pointB.longitude, pointB.latitude)
+                try:
                     if pointA.elevation > pointB.elevation:
                         ele += pointA.elevation - pointB.elevation
+                except TypeError:
+                    continue
 
-        return (dist, ele)
+    dist = int(dist)
+    ele = int(ele)
+    print(dist, ele)
+
+    return (dist, ele)
 
 
 def main():
-    pass
+    with open('media/ASR_2017_26.08.17.gpx', 'r') as f:
+        print(type(get_location(f)[0]))
 
 
 if __name__ == "__main__":

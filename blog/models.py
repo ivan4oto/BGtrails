@@ -1,11 +1,16 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.models import User, Group
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django_measurement.models import MeasurementField
 from measurement.measures import Distance
+from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from coordinates import get_distance
+
+
+static_storage = FileSystemStorage(location=settings.STATIC_ROOT)
 
 
 class Adventurer(models.Model):
@@ -21,8 +26,8 @@ class Adventurer(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=64)
-    distance = MeasurementField(measurement=Distance)
-    elevation = MeasurementField(measurement=Distance)
+    distance = MeasurementField(measurement=Distance, null=True)
+    elevation = MeasurementField(measurement=Distance, null=True)
     lat = models.FloatField(null=True)
     lon = models.FloatField(null=True)
     description = models.TextField()
@@ -30,7 +35,7 @@ class Post(models.Model):
     want_go = models.ManyToManyField(Adventurer, related_name='want_go_adventurer_set')
     been_there = models.ManyToManyField(Adventurer, related_name='been_there_adventurer_set')
     author = models.ForeignKey(Adventurer, null=True, on_delete=models.CASCADE, related_name='Adventurer')
-    file = models.FileField()
+    file = models.FileField(storage=static_storage)
     image = models.ImageField(blank=True)
 
     def in_range(self, coords, range_km):
