@@ -13,21 +13,19 @@ from django.views.generic import (
 )
 from measurement.measures import Distance
 
-from coordinates import get_location, get_distance
+from coordinates import get_location, get_distance, get_track_length
 from .decorators import allowed_users
 from .forms import CreateUserForm, CreatePostForm, AdventurerForm, RateForm, ImagePostForm
 from .models import Post, Adventurer, PostImage, Rate
 
 
 def map_page(request, post_id):
-    url = staticfiles_storage.url('files/malyo.gpx')
     post = get_object_or_404(Post, id=post_id)
-    post_gpx = staticfiles_storage.url(f'files/{post.file}')
+    post_gpx = staticfiles_storage.url(f'{post.file}')
     lat = post.lat
     lon = post.lon
 
-    return render(request, 'blog/map.html', context={'gpxfile': url,
-                                                     'post': post,
+    return render(request, 'blog/map.html', context={'post': post,
                                                      'postfile': post_gpx,
                                                      'lat': lat,
                                                      'lon': lon})
@@ -179,12 +177,9 @@ class ImageFieldView(FormView):
     success_url = reverse_lazy('blog-home')
 
     def post(self, request, *args, **kwargs):
-        print(request.FILES, '<---- REQUST FILES')
-        print(request.POST, '<---- REQUST POST')
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         files = request.FILES.getlist('image')
-        print(files, 'Files <----')
         if form.is_valid():
             post_id = int(request.build_absolute_uri('?').split('/')[-2])
             for f in files:
@@ -201,12 +196,13 @@ class PostCreateView(CreateView):
     form_class = CreatePostForm
     queryset = Post.objects.all()
 
-    def form_valid(self, form, coordinates, username, *args, **kwargs):
+    def form_valid(self, form, coordinates, username, distance, elevation, *args, **kwargs):
         response = super().form_valid(form=form, *args, **kwargs)
         self.object.lat = coordinates[0]
         self.object.lon = coordinates[1]
+        self.object.distance = distance
+        self.object.elevation = elevation
         self.object.author = username
-        """If the form is valid, save the associated model."""
         self.object = form.save()
         return response
 
@@ -214,10 +210,19 @@ class PostCreateView(CreateView):
         if request.user.is_authenticated:
             form = CreatePostForm(request.POST, request.FILES)
             images = request.FILES.getlist('image_field')
+
             if form.is_valid():
                 gpx = str(form.cleaned_data.get('file').read(1024))
+                form.cleaned_data.get('file').seek(0)
+                gpxFile = form.cleaned_data.get('file')
                 coordinates = get_location(gpx)
-                return self.form_valid(form=form, coordinates=coordinates, username=request.user.adventurer)
+                """ Parse gpx to get distance and elevation """
+                distance, elevation = get_track_length(gpxFile)
+                distance = Distance(km=distance)
+                elevation = Distance(m=elevation)
+
+                return self.form_valid(form=form, coordinates=coordinates, username=request.user.adventurer,
+                                       elevation=elevation, distance=distance)
             else:
                 return self.form_invalid(form=form)
         else:
@@ -235,8 +240,6 @@ class PostForm(forms.ModelForm):
 def edit_post(request, post_id):
     post = Post.objects.get(id=post_id)
     adventurer = request.user.adventurer
-    # if not adventurer.post_set.filter(id=post_id):
-    print(type(adventurer), 'testiiing <---')
     if not Post.objects.filter(author=adventurer):
         return redirect('blog-home')
 
