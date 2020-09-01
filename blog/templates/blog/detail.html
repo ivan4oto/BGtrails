@@ -5,12 +5,15 @@
             {% if post.author == user.adventurer %}
                 <p><a href="{% url 'update' post.id %}"><button type="button" class="btn btn-light">Edit</button></a>
             {% endif %}
-            {#            <a href="{% url 'update' post.id %}"><button type="button" class="btn btn-light">Edit</button></a>#}
+            <!-- {#            <a href="{% url 'update' post.id %}"><button type="button" class="btn btn-light">Edit</button></a>#} -->
             {% if not post in user.adventurer.want_go_adventurer_set %}
                <a href="{% url 'add-post' post.id %}"><button type="button" class="btn btn-light">Add to wishlist</button></a>
             {% endif %}
             {% if not post in user.adventurer.been_there_adventurer_set %}
-               <a href="{% url 'add_been_there' post.id %}"><button type="button" class="btn btn-light">Mark as visited</button></a></p>
+               <a href="{% url 'add_been_there' post.id %}"><button type="button" class="btn btn-light">Mark as visited</button></a>
+            {% endif %}
+            {% if post.author == user.adventurer %}
+                <a href="{% url 'delete_post' post.id %}"><button type="button" class="btn btn-light">Delete</button></p>
             {% endif %}
             <div class="post-title">
                 <h2>{{ post.title }}</h2>

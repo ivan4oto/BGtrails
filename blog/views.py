@@ -1,4 +1,5 @@
 from django import forms
+from django.http import Http404
 from django.contrib import messages
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.auth import logout, authenticate, login
@@ -7,7 +8,7 @@ from django.contrib.auth.models import Group
 from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, DeleteView
 from django.views.generic import (
     CreateView
 )
@@ -152,24 +153,6 @@ def detail(request, post_id):
     })
 
 
-# def upload_image_view(request):
-#     user = request.user
-#     print(request)
-#     if request.method == 'POST':
-#         file_form = ImagePostForm(request.POST, request.FILES)
-#         files = request.FILES.getlist('image') #field name in model
-#         if file_form.is_valid():
-#             feed_instance = form.save(commit=False)
-#             feed_instance.user = user
-#             feed_instance.save()
-#             for f in files:
-#                 file_instance = FeedFile(file=f, feed=feed_instance)
-#                 file_instance.save()
-#     else:
-#         form = FeedModelForm()
-#         file_form = FileModelForm()
-
-
 class ImageFieldView(FormView):
     model = PostImage
     form_class = ImagePostForm
@@ -233,6 +216,21 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'distance', 'elevation', 'description', 'image']
+
+
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url = reverse_lazy('blog-home')
+
+    def get_object(self):
+        id_ = self.kwargs.get("post_id")
+        return get_object_or_404(Post, pk=id_)
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != self.request.user.adventurer:
+            raise Http404("You are not allowed to edit this Post")
+        return super(PostDeleteView, self).dispatch(request, *args, **kwargs)
 
 
 @login_required(login_url='login')
