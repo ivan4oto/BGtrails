@@ -1,4 +1,5 @@
 from django import forms
+from django.http import Http404
 from django.contrib import messages
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.auth import logout, authenticate, login
@@ -224,6 +225,12 @@ class PostDeleteView(DeleteView):
     def get_object(self):
         id_ = self.kwargs.get("post_id")
         return get_object_or_404(Post, pk=id_)
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != self.request.user.adventurer:
+            raise Http404("You are not allowed to edit this Post")
+        return super(PostDeleteView, self).dispatch(request, *args, **kwargs)
 
 
 @login_required(login_url='login')
