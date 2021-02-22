@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from .forms import LoginForm, RegisterForm
 
+User = get_user_model()
 
 def register_view(request):
     form = RegisterForm(request.POST or None)
@@ -21,7 +22,7 @@ def register_view(request):
             return redirect("/")
         else:
             request.session['register_error'] = 1 # 1 == True
-    return render(request, "forms.html", {"form": form})
+    return render(request, "accounts/create_user.html", {"form": form})
 
 def login_view(request):
     form = LoginForm(request.POST or None)
@@ -39,7 +40,7 @@ def login_view(request):
             # request.session['attempt'] = attempt + 1
             # return redirect("/invalid-password")
             request.session['invalid_user'] = 1 # 1 == True
-    return render(request, "forms.html", {"form": form})
+    return render(request, "accounts/login_user.html", {"form": form})
 
 def logout_view(request):
     logout(request)
