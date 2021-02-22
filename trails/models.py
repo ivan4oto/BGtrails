@@ -14,7 +14,6 @@ validate_file = FileValidator(max_size=1024 * 100,
 class Trail(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True)
-
     distance = models.FloatField(null=True, blank=True)
     elevation = models.IntegerField(null=True, blank=True)
     location = models.PointField(null=True, blank=True)
@@ -22,14 +21,10 @@ class Trail(models.Model):
                                 validators=[validate_file])
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
+
     def save(self, *args, **kwargs):
         self.full_clean()
-        self._set_location()
-        self.gpx_file.seek(0)
-        self._set_elevation()
-        self.gpx_file.seek(0)
-        self._set_distance()
-        self.gpx_file.seek(0)
+        self._set_properties()
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -47,6 +42,10 @@ class Trail(models.Model):
     def _set_distance(self):
         self.distance = get_total_distance(self.gpx_file.file)
 
-    def get_filename(self):
-        #.
-        return False
+    def _set_properties(self):
+        self._set_location()
+        self.gpx_file.seek(0)
+        self._set_elevation()
+        self.gpx_file.seek(0)
+        self._set_distance()
+        self.gpx_file.seek(0)
