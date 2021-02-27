@@ -1,6 +1,10 @@
 from math import radians, cos, sin, asin, sqrt
+import json
 
 from lxml import etree
+import matplotlib.path as mplPath
+import numpy as np
+
 
 
 def haversine(lon1, lat1, lon2, lat2):
@@ -68,9 +72,26 @@ def strip_ns_prefix(tree):
         element.tag = etree.QName(element).localname
     return tree
 
-# f = open("/mnt/c/Users/ivan/Downloads/balkan_sky.gpx", "r")
-# a = get_total_distance(f)
-# b = get_total_elevation(f)
-# c = get_starting_point(f)
+poly = [190, 50, 500, 310]
+bbPath = mplPath.Path(np.array([[poly[0], poly[1]],
+                     [poly[1], poly[2]],
+                     [poly[2], poly[3]],
+                     [poly[3], poly[0]]]))
 
-# print(c)
+bbPath.contains_point((200, 100))
+
+
+mountain_dict = {
+    "Stara Planina": '../cdn_test/media/polygons/stara_planina.json'
+}
+point = (24.669800, 42.514626)
+
+
+def localise_point(point, mountain_dict):
+    for location_name, file_path in mountain_dict.items():
+        with open(file_path, encoding='utf-8-sig') as f:
+            jsonfile = json.load(f)
+            polygon = jsonfile.get('polygon')
+            polyPath = mplPath.Path(np.array(polygon))
+            if polyPath.contains_point(point):
+                return jsonfile.get('name')
