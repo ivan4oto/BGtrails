@@ -3,5 +3,11 @@
 
 
 {% block content %}
-<h1>Hello welcome home!</h1>
+{% include 'trails/snippets/trail_search.html' %}
+{% for object in myFilter.qs %}
+    <div>
+        {% include 'trails/snippets/trail_detail.html' %}
+    </div>
+{% endfor %}
 {% endblock %}
+

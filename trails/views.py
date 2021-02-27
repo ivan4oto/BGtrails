@@ -3,12 +3,15 @@ from django.http import Http404
 
 from .forms import TrailForm
 from .models import Trail
+from .filters import TrailFilter
 # Create your views here.
 
 
 def home_view(request, *args, **kwargs):
-    context = {
-    }
+    objs = Trail.objects.all() # [obj1, obj2, obj3,]
+    myFilter = TrailFilter(request.GET, queryset=objs)
+
+    context = {"object_list": objs, "myFilter": myFilter}
     return render(request, "home.html", context)
 
 

@@ -1,8 +1,3 @@
-{% extends "base.html" %}
-
-{% block content %}
-
-<h2 class='title is-2'>{{ object.name }}</h2>
 <div class="card">
   <header class="card-header">
     <a href={{ object.get_absolute_url }} class="card-header-title">{{ object.name }}</a>
@@ -23,5 +18,3 @@
     <a href="#" class="card-footer-item">Delete</a>
   </footer>
 </div>
-
-{% endblock %}

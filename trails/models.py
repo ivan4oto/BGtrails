@@ -29,7 +29,7 @@ class Trail(models.Model):
 
     def get_absolute_url(self):
         from django.urls import reverse
-        return reverse('trails.views.trail_detail_view', args=[str(self.id)])
+        return reverse(viewname='detail-trail', args=[str(self.id)])
 
     def _set_location(self):
         coordinates = get_starting_point(self.gpx_file.file)

@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 from trails.views import trail_create_view, trail_detail_view, home_view
-from accounts.views import register_view, login_view
+from accounts.views import register_view, login_view, logout_view
 from django.conf.urls.static import static
 
 
@@ -29,6 +29,7 @@ urlpatterns = [
     path('detail-trail/<int:pk>/', trail_detail_view, name='detail-trail'),
     path('register', register_view, name='register'),
     path('login', login_view, name='login'),
+    path('logout', logout_view, name='logout'),
 ]
 
 
