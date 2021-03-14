@@ -49,3 +49,9 @@ class Trail(models.Model):
         self.gpx_file.seek(0)
         self._set_distance()
         self.gpx_file.seek(0)
+
+    def get_lat(self):
+        return self.location.x
+
+    def get_lon(self):
+        return self.location.y

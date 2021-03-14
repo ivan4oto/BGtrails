@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'trails',
-    'django_filters'
+    'django_filters',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -86,7 +88,17 @@ DATABASES = {
         
     }
 }
+AWS_QUERYSTRING_AUTH = False
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'bgtrailstracks'
+AWS_S3_REGION_NAME = 'eu-central-1'
+AWS_DEFAULT_ACL = None
 
+
+DEFAULT_FILE_STORAGE = 'trails.storages.MediaStorage'
+# STATICFILES_STORAGE = 'trails.storages.StaticStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -120,21 +132,18 @@ USE_L10N = True
 
 USE_TZ = True
 
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static"
+# ]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'trails/'
+# MEDIA_URL = "/media/"
+# MEDIA_ROOT = BASE_DIR / "cdn_test" / "media"
 
-STATICFILES_DIR = [
-    BASE_DIR / "staticfiles"
-]
-
-STATIC_ROOT =  BASE_DIR / "cdn_test" / "static" # AWS S3 + Cloudfront, Google Cloud Storage, django-storages
-
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "cdn_test" / "media"
-
-if DEBUG:
-    MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
-    STATIC_ROOT.mkdir(parents=True, exist_ok=True)
+# if DEBUG:
+#     MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
+    # STATIC_ROOT.mkdir(parents=True, exist_ok=True)

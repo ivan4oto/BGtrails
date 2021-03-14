@@ -17,6 +17,7 @@ def home_view(request, *args, **kwargs):
 
 def trail_create_view(request):
     form = TrailForm(request.POST or None, request.FILES or None)
+    print('before form check')
     if form.is_valid():
         print('before form save')
         obj = form.save(commit=False)

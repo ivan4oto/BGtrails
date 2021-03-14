@@ -120,3 +120,4 @@ Lib/
 # static files
 media/
 static/
+*.gpx

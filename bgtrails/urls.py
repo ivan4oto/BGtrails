@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path
 from trails.views import trail_create_view, trail_detail_view, home_view
 from accounts.views import register_view, login_view, logout_view
-from django.conf.urls.static import static
+# from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -33,7 +33,7 @@ urlpatterns = [
 ]
 
 
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

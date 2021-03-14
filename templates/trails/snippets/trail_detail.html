@@ -1,20 +1,21 @@
-<div class="card">
-  <header class="card-header">
-    <a href={{ object.get_absolute_url }} class="card-header-title">{{ object.name }}</a>
-  </header>
-  <div class="card-content">
-    <div class="content">
-      Description:
-      {{ object.description }}
-      <br>
-      Distance: {{ object.distance }}
-      <br>
-      Elevation: {{ object.elevation }}
+  <div class="card">
+    <header class="card-header">
+      <a href={{ object.get_absolute_url }} class="card-header-title">{{ object.name }}</a>
+    </header>
+    <div class="card-content">
+      <div class="content">
+        Description:
+        {{ object.description }}
+        <br>
+        Distance: {{ object.distance }}
+        <br>
+        Elevation: {{ object.elevation }}
+      </div>
     </div>
+    <footer class="card-footer">
+      <a href={{ object.gpx_file.url }} class="card-footer-item">Save</a>
+      <a href="#" class="card-footer-item">Edit</a>
+      <a href="#" class="card-footer-item">Delete</a>
+    </footer>
+    
   </div>
-  <footer class="card-footer">
-    <a href={{ object.gpx_file.url }} class="card-footer-item">Save</a>
-    <a href="#" class="card-footer-item">Edit</a>
-    <a href="#" class="card-footer-item">Delete</a>
-  </footer>
-</div>

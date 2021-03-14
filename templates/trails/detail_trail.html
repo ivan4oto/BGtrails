@@ -1,27 +1,36 @@
 {% extends "base.html" %}
+{% load static %}
+{% block head %}
+ {% comment %} <link rel='stylesheet' href="{% static 'css/leaflet.css' %}"> {% endcomment %}
+ 
+ <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+ <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
 
+{% endblock %}
+{% block title %}{{ object.name }}{% endblock %}
 {% block content %}
-
-<h2 class='title is-2'>{{ object.name }}</h2>
-<div class="card">
-  <header class="card-header">
-    <a href={{ object.get_absolute_url }} class="card-header-title">{{ object.name }}</a>
-  </header>
-  <div class="card-content">
-    <div class="content">
-      Description:
-      {{ object.description }}
+  <h1 id='myid'>my id</h1>
+    <h1 class="title">{{ object.name }}</h1>
+    <h2 class="subtitle">
+      <strong>Distance:</strong> {{ object.distance }}
       <br>
-      Distance: {{ object.distance }}
+      <strong>Elevation:</strong> {{ object.elevation }}
       <br>
-      Elevation: {{ object.elevation }}
-    </div>
-  </div>
-  <footer class="card-footer">
-    <a href={{ object.gpx_file.url }} class="card-footer-item">Save</a>
-    <a href="#" class="card-footer-item">Edit</a>
-    <a href="#" class="card-footer-item">Delete</a>
-  </footer>
-</div>
+      <strong>File:</strong> <div id='myfile'>{{ object.gpx_file.url }}</div>
+    </h2>
+    <div id="map"></div>
+    {% block js %}
+      {% comment %} <script src="{% static 'trails/js/jquery-3.6.0.js' %}"></script> {% endcomment %}
+      <script src="{% static  'trails/js/togeojson.js'%}"></script>
+      <script type="text/javascript"> 
 
+        var objLat = "{{ object.get_lat }}";
+        var objLon = "{{ object.get_lon }}";
+        var objGpxPath = "{{ object.gpx_file.url }}";
+        var objName = "{{ object.name }}";
+
+      </script>
+      <script src="https://sdk.amazonaws.com/js/aws-sdk-2.863.0.min.js"></script>
+      <script src="{% static 'trails/js/mymap.js' %}"></script>
+    {% endblock %}
 {% endblock %}
