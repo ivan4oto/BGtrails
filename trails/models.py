@@ -20,6 +20,7 @@ class Trail(models.Model):
     gpx_file = models.FileField(storage=MediaStorage, upload_to='trails', null=True, blank=True,
                                 validators=[validate_file])
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    # tag = models.CharField(max_length=25, null=True)
 
 
     def save(self, *args, **kwargs):
@@ -55,3 +56,7 @@ class Trail(models.Model):
 
     def get_lon(self):
         return self.location.y
+    
+    # def _to_geojson(self):
+    #     geojson_file = 
+    #     self.gpx_file.file = 

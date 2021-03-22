@@ -1,21 +1,36 @@
-  <div class="card">
-    <header class="card-header">
-      <a href={{ object.get_absolute_url }} class="card-header-title">{{ object.name }}</a>
-    </header>
-    <div class="card-content">
-      <div class="content">
-        Description:
-        {{ object.description }}
-        <br>
-        Distance: {{ object.distance }}
-        <br>
-        Elevation: {{ object.elevation }}
-      </div>
+{% load static %}
+  <div class="box">
+  <article class="media">
+    <div class="media-left">
+    <a href={{ object.get_absolute_url }}>
+      <figure class="image is-128x128">
+        <img src='https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/{{ object.get_lat }},{{ object.get_lon }},9,0/300x200?access_token=pk.eyJ1IjoiaXZhbjRvdG8iLCJhIjoiY2tlMGVnbzFxM3V6NDJxbXFzZmhmZ29tcyJ9.jbuxXicfoB-ygV96MaT7pQ' alt="Image">
+      </figure>
+    </a>
     </div>
-    <footer class="card-footer">
-      <a href={{ object.gpx_file.url }} class="card-footer-item">Save</a>
-      <a href="#" class="card-footer-item">Edit</a>
-      <a href="#" class="card-footer-item">Delete</a>
-    </footer>
-    
-  </div>
+    <div class="media-content">
+      <div class="content">
+        <p>
+          <a href={{ object.get_absolute_url }}><strong>{{ object.name }}</strong></a>
+          <br>
+          <small>Distance: {{ object.distance }}</small> <small>Elevation: {{ object.elevation }} </small>
+          <br>
+          {{ object.description }}
+        </p>
+      </div>
+      <nav class="level is-mobile">
+        <div class="level-left">
+          <a href={{ object.gpx_file.url }}>
+            <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
+          </a>
+          <a href="">
+            <img src="{% static 'trails/images/icons/favorite_border.svg' %}" alt="Favorite">
+          </a>
+          <a href={% url 'delete-trail' object.id %}>
+            <img src="{% static 'trails/images/icons/delete_black.svg' %}" alt="Delete">
+          </a>
+        </div>
+      </nav>
+    </div>
+  </article>
+</div>
