@@ -20,6 +20,7 @@ class Trail(models.Model):
     gpx_file = models.FileField(storage=MediaStorage, upload_to='trails', null=True, blank=True,
                                 validators=[validate_file])
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    # tag = models.CharField(max_length=25, null=True)
 
 
     def save(self, *args, **kwargs):
@@ -29,7 +30,7 @@ class Trail(models.Model):
 
     def get_absolute_url(self):
         from django.urls import reverse
-        return reverse('trails.views.trail_detail_view', args=[str(self.id)])
+        return reverse(viewname='detail-trail', args=[str(self.id)])
 
     def _set_location(self):
         coordinates = get_starting_point(self.gpx_file.file)
@@ -49,3 +50,13 @@ class Trail(models.Model):
         self.gpx_file.seek(0)
         self._set_distance()
         self.gpx_file.seek(0)
+
+    def get_lat(self):
+        return self.location.x
+
+    def get_lon(self):
+        return self.location.y
+    
+    # def _to_geojson(self):
+    #     geojson_file = 
+    #     self.gpx_file.file = 

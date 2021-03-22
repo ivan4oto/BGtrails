@@ -1,12 +1,17 @@
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ImproperlyConfigured
+from storages.backends.s3boto3 import S3Boto3Storage
 
 
-MEDIA = getattr(settings, 'MEDIA_ROOT', None)
-if MEDIA == None:
-    raise ImproperlyConfigured("MEDIA_ROOT is not set in settings.py")
+BUCKET_NAME = getattr(settings, 'AWS_STORAGE_BUCKET_NAME', None)
+if BUCKET_NAME == None:
+    raise ImproperlyConfigured("BUCKET_NAME is not set in settings.py")
 
 # django-storages
-class MediaStorage(FileSystemStorage):
-    location = MEDIA
+class MediaStorage(S3Boto3Storage):
+    bucket_name = BUCKET_NAME
+    location = 'media'
+
+class StaticStorage(S3Boto3Storage):
+    bucket_name = BUCKET_NAME
+    location = 'trails'

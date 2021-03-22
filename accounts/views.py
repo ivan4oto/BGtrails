@@ -45,4 +45,4 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     # request.user == Anon User
-    return redirect("/login")
+    return redirect("/")

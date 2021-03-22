@@ -120,3 +120,5 @@ Lib/
 # static files
 media/
 static/
+*.gpx
+cdn_test/
