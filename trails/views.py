@@ -11,8 +11,9 @@ from .filters import TrailFilter
 def home_view(request, *args, **kwargs):
     objs = Trail.objects.all() # [obj1, obj2, obj3,]
     myFilter = TrailFilter(request.GET, queryset=objs)
-
-    context = {"object_list": objs, "myFilter": myFilter}
+    user = request.user
+    favourtes = user.favourites.all()
+    context = {"object_list": objs, "myFilter": myFilter, "user_favs": favourtes}
     return render(request, "home.html", context)
 
 

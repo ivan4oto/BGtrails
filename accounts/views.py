@@ -1,7 +1,10 @@
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 
 # Create your views here.
+from trails.models import Trail
 from .forms import LoginForm, RegisterForm
 
 User = get_user_model()
@@ -42,7 +45,26 @@ def login_view(request):
             request.session['invalid_user'] = 1 # 1 == True
     return render(request, "accounts/login_user.html", {"form": form})
 
+@login_required
 def logout_view(request):
     logout(request)
     # request.user == Anon User
     return redirect("/")
+
+def user_detail(request, username):
+    user = User.objects.filter(username=username)
+
+    return render(request, "trails/detail_trail.html", {"object": obj})
+
+@login_required
+def favourite_trail(request, pk):
+    trail = get_object_or_404(Trail, pk=pk)
+    user = request.user
+    print('\n\n {} \n\n'.format(user.username))
+    if trail in user.favourites.all():
+        user.favourites.remove(trail)
+    else:
+        user.favourites.add(trail)
+    return HttpResponse(status=204)
+
+    

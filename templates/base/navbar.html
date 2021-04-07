@@ -57,7 +57,9 @@
         <div class="buttons">
         
         {% if user.is_authenticated %}
-        {{ user.username }}
+        <a class="button is-primary" href"{% url 'logout' %}">
+          {{ user.username }}
+        </a>
           <a class="button is-light" href="{% url 'logout' %}">
             Log out
           </a>

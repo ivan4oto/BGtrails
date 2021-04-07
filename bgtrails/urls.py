@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 from trails.views import trail_create_view, trail_detail_view, home_view, trail_delete_view
-from accounts.views import register_view, login_view, logout_view
+from accounts.views import register_view, login_view, logout_view, favourite_trail, user_detail
 # from django.conf.urls.static import static
 
 
@@ -31,6 +31,8 @@ urlpatterns = [
     path('register', register_view, name='register'),
     path('login', login_view, name='login'),
     path('logout', logout_view, name='logout'),
+    path('user/<str:username>/', user_detail, name='user-detail'),
+    path('favourite-trail/<int:pk>/', favourite_trail, name='favourite-trail')
 ]
 
 
