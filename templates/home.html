@@ -1,6 +1,5 @@
-  
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block content %}
 <div class='section'>
@@ -11,5 +10,44 @@
         {% include 'trails/snippets/trail_detail.html' %}
     </div>
 {% endfor %}
+
+    {% block js %}
+    <script src="{% static  'trails/js/jquery-3.6.0.js'%}"></script>
+    <script type="text/javascript">
+        var userName = "{{ user.get_username }}"
+        var csrfToken = "{{ csrf_token }}"
+        console.log(userName)
+        console.log(csrfToken)
+        {% comment %} var favUrl = "{% url 'favourite-trail' object.id %}" {% endcomment %}
+        {% comment %} $("#fav-button").click(function () {
+            console.log('clicked');
+            $.ajax({
+                type: 'POST',
+                url: "theurltofavs",
+                data: {
+                    somedata: 'somedata',
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    // on successfull creating object
+                    // 1. clear the form.
+                    $("#friend-form").trigger('reset');
+                    // 2. focus to nickname input 
+                    $("#id_nick_name").focus();
+
+                    // display the newly friend to table.
+                    var instance = JSON.parse(response["instance"]);
+                    var fields = instance[0]["fields"];
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            }) {% endcomment %}
+    </script>
+    
+    {% comment %} <script src="{% static  'trails/js/home.js'%}"></script> {% endcomment %}
+    {% endblock %}
+
 {% endblock %}
 

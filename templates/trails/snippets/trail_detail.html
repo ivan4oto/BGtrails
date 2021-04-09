@@ -23,15 +23,13 @@
           <a href={{ object.gpx_file.url }}>
             <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
           </a>
-          {% if object not in user_favs %}
-            <a href={% url 'favourite-trail' object.id %}>
-              <img src="{% static 'trails/images/icons/favorite_border.svg' %}" alt="Favorite">
+            <a href={% url 'favourite-trail' object.id %} id='fav-button'>
+              {% if object not in user_favs %}
+              <img id='fav-white' src="{% static 'trails/images/icons/favorite_border.svg' %}" alt="Favorite">
+              {% else %}
+              <img id='fav-black' src="{% static 'trails/images/icons/favorite_black.svg' %}" alt="Favorite">
+              {% endif %}
             </a>
-          {% else %}
-            <a href={% url 'favourite-trail' object.id %}>
-              <img src="{% static 'trails/images/icons/favorite_black.svg' %}" alt="Favorite">
-            </a>
-          {% endif %}
           <a href={% url 'delete-trail' object.id %}>
             <img src="{% static 'trails/images/icons/delete_black.svg' %}" alt="Delete">
           </a>

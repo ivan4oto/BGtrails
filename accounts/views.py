@@ -58,6 +58,7 @@ def user_detail(request, username):
 
 @login_required
 def favourite_trail(request, pk):
+    context = {}
     trail = get_object_or_404(Trail, pk=pk)
     user = request.user
     print('\n\n {} \n\n'.format(user.username))
@@ -65,6 +66,6 @@ def favourite_trail(request, pk):
         user.favourites.remove(trail)
     else:
         user.favourites.add(trail)
-    return HttpResponse(status=204)
+    return render(request, "home.html", context)
 
     
