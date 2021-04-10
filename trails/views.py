@@ -12,8 +12,11 @@ def home_view(request, *args, **kwargs):
     objs = Trail.objects.all() # [obj1, obj2, obj3,]
     myFilter = TrailFilter(request.GET, queryset=objs)
     user = request.user
-    favourtes = user.favourites.all()
-    context = {"object_list": objs, "myFilter": myFilter, "user_favs": favourtes}
+    if user.is_authenticated:
+        favourites = user.favourites.all()
+    else:
+        favourites = []
+    context = {"object_list": objs, "myFilter": myFilter, "user_favs": favourites}
     return render(request, "home.html", context)
 
 
@@ -30,6 +33,10 @@ def trail_create_view(request):
         obj.save()
         form = TrailForm()
         return redirect(to='home')
+    
+    # print(form.non_field_errors())
+    # print(form.has_error('gpx_file'))
+    # print(form._errors)
     return render(request, "trails/create_trail.html", {"form": form})
 
 
