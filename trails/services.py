@@ -60,7 +60,7 @@ def get_total_elevation(gpx_file):
     for e in range(len(elements_list)-1):
         ele1, ele2 = elements_list[e].text, elements_list[e+1].text
         if ele1 < ele2:
-            total_elevation += int(ele2) - int(ele1)
+            total_elevation += int(float(ele2)) - int(float(ele1))
     return total_elevation
 
 def strip_ns_prefix(tree):

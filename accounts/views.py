@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+
 
 # Create your views here.
 from trails.models import Trail
@@ -56,16 +57,19 @@ def user_detail(request, username):
 
     return render(request, "trails/detail_trail.html", {"object": obj})
 
+
 @login_required
 def favourite_trail(request, pk):
-    context = {}
     trail = get_object_or_404(Trail, pk=pk)
-    user = request.user
+    user = User.objects.get(pk=pk)
     print('\n\n {} \n\n'.format(user.username))
     if trail in user.favourites.all():
         user.favourites.remove(trail)
+        data = {'is-fav': False}
+        return JsonResponse(data)
     else:
         user.favourites.add(trail)
-    return render(request, "home.html", context)
+        data = {'is-fav': True}
+        return JsonResponse(data)
 
     

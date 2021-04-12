@@ -7,7 +7,7 @@ from .validators import FileValidator
 from .services import get_starting_point, get_total_distance, get_total_elevation
 
 User = settings.AUTH_USER_MODEL
-validate_file = FileValidator(max_size=1024 * 100, 
+validate_file = FileValidator(max_size=2048 * 1000, 
                              content_types=('text/xml',))
 
 # Create your models here.

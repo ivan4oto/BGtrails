@@ -14,4 +14,5 @@ class MediaStorage(S3Boto3Storage):
 
 class StaticStorage(S3Boto3Storage):
     bucket_name = BUCKET_NAME
-    location = 'trails'
+    location = ''
+    # location = 'trails'

@@ -23,7 +23,7 @@
           <a href={{ object.gpx_file.url }}>
             <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
           </a>
-            <a href={% url 'favourite-trail' object.id %} id='fav-button'>
+            <a href='' id='fav-button'>
               {% if object not in user_favs %}
               <img id='fav-white' src="{% static 'trails/images/icons/favorite_border.svg' %}" alt="Favorite">
               {% else %}
@@ -39,7 +39,38 @@
   </article>
 </div>
 {% block js %}
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
  <script type="text/javascript">
- console.log('Im here')
+    console.log('Im here')
+    console.log("{% url 'favourite-trail' object.id %}")  
+    var userName = "{{ user.get_username }}"
+    var csrfToken = "{{ csrf_token }}"
+    console.log(userName)
+    console.log(csrfToken)
+    var favUrl = "{% url 'favourite-trail' object.id %}"
+    $("#fav-button").click(function () {
+        console.log('clicked');
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'favourite-trail' object.id %}",
+            data: {
+                user: userName,
+                csrfmiddlewaretoken: csrfToken
+            },
+            success: function (response) {
+              console.log('success')
+              console.log(response)                   
+                // display the newly friend to table.
+                var instance = JSON.parse(response["is-fav"]);
+            },
+            error: function (response) {
+                // alert the error if any error occured
+                alert(response["responseJSON"]["error"]);
+            }
+        })
+    })
  </script>
 {% endblock %}
