@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path
-from trails.views import trail_create_view, trail_detail_view, home_view, trail_delete_view
+from trails.views import trail_create_view, trail_detail_view, home_view, trail_delete_view, trail_type_view
 from accounts.views import register_view, login_view, logout_view, favourite_trail, user_detail
 # from django.conf.urls.static import static
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path('create-trail', trail_create_view, name='create-trail'),
     path('delete-trail/<int:pk>/', trail_delete_view, name='delete-trail'),
     path('detail-trail/<int:pk>/', trail_detail_view, name='detail-trail'),
+    path('type-trail/<str:tag>/', trail_type_view, name='type-trail'),
     path('register', register_view, name='register'),
     path('login', login_view, name='login'),
     path('logout', logout_view, name='logout'),

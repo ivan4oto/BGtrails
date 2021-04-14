@@ -19,7 +19,7 @@
       <a class="navbar-item" href="{% url 'home' %}">
         Състезания
       </a>
-      <a class="navbar-item" href="{% url 'home' %}">
+      <a class="navbar-item" href="{% url 'type-trail' 'kom-emine'%}">
         Ком-Емине
       </a>
 
@@ -57,7 +57,7 @@
         <div class="buttons">
         
         {% if user.is_authenticated %}
-        <a class="button is-primary" href"{% url 'logout' %}">
+        <a class="button is-primary" href="{% url 'user-detail' user.get_username %}">
           {{ user.username }}
         </a>
           <a class="button is-light" href="{% url 'logout' %}">

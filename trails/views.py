@@ -19,6 +19,16 @@ def home_view(request, *args, **kwargs):
     context = {"object_list": objs, "myFilter": myFilter, "user_favs": favourites}
     return render(request, "home.html", context)
 
+def trail_type_view(request, tag):
+    objs = Trail.objects.filter(tag=tag)
+    user = request.user
+    myFilter = TrailFilter(request.GET, queryset=objs)
+    if user.is_authenticated:
+        favourites = user.favourites.all()
+    else:
+        favourites = []
+    context = {"object_list": objs, "myFilter": myFilter, "user_favs": favourites}
+    return render(request, "home.html", context)
 
 @login_required
 def trail_create_view(request):

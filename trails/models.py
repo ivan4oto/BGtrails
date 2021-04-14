@@ -12,6 +12,18 @@ validate_file = FileValidator(max_size=2048 * 1000,
 
 # Create your models here.
 class Trail(models.Model):
+    TAG_CHOICES = [
+        ('KE', 'Ком Емине'),
+        ('RL', 'Рила'),
+        ('VS', 'Витоша'),
+        ('SP', 'Стара Планина'),
+        ('PN', 'Пирин'),
+        ('RP', 'Родопи'),
+        ('ZB', 'Западен Балкан'),
+        ('CB', 'Централен Балкан'),
+        ('IB', 'Източен Балкан')
+    ]
+
     name = models.CharField(max_length=100)
     description = models.TextField(null=True)
     distance = models.FloatField(null=True, blank=True)
@@ -20,7 +32,7 @@ class Trail(models.Model):
     gpx_file = models.FileField(storage=MediaStorage, upload_to='trails', null=True, blank=True,
                                 validators=[validate_file])
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    # tag = models.CharField(max_length=25, null=True)
+    tag = models.CharField(max_length=25, choices=TAG_CHOICES, null=True)
 
 
     def save(self, *args, **kwargs):

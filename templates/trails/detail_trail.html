@@ -8,22 +8,28 @@
 
 {% endblock %}
 {% block title %}{{ object.name }}{% endblock %}
-{% block content %}
-  <h1 id='myid'>my id</h1>
+  {% block content %}
     <h1 class="title">{{ object.name }}</h1>
     <h2 class="subtitle">
       <strong>Distance:</strong> {{ object.distance }}
       <br>
       <strong>Elevation:</strong> {{ object.elevation }}
       <br>
-      <strong>File:</strong> <div id='myfile'>{{ object.gpx_file.url }}</div>
+      <strong>Download:</strong>
+      <a href={{ object.gpx_file.url }}>
+        <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
+      </a>
     </h2>
     <div id="map"></div>
+    <h2 class="subtitle">
+    Description:
+    {{ object.description }}
+    </h2>
+
     {% block js %}
       {% comment %} <script src="{% static 'trails/js/jquery-3.6.0.js' %}"></script> {% endcomment %}
       <script src="{% static  'trails/js/togeojson.js'%}"></script>
-      <script type="text/javascript"> 
-
+      <script type="text/javascript">
         var objLat = "{{ object.get_lat }}";
         var objLon = "{{ object.get_lon }}";
         var objGpxPath = "{{ object.gpx_file.url }}";
@@ -32,5 +38,5 @@
       </script>
       <script src="https://sdk.amazonaws.com/js/aws-sdk-2.863.0.min.js"></script>
       <script src="{% static 'trails/js/mymap.js' %}"></script>
-    {% endblock %}
+  {% endblock %}
 {% endblock %}

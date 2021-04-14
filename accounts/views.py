@@ -53,9 +53,10 @@ def logout_view(request):
     return redirect("/")
 
 def user_detail(request, username):
-    user = User.objects.filter(username=username)
-
-    return render(request, "trails/detail_trail.html", {"object": obj})
+    user = User.objects.get(username=username)
+    if request.user == user:
+        favs = user.favourites.all()
+        return render(request, "accounts/detail_user.html", {"favs": favs})
 
 
 @login_required
