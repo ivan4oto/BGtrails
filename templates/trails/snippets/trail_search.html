@@ -1,4 +1,33 @@
 <form method="get">
-  {{ myFilter.form.as_p }}
-  <input type="submit" />
+  <div class="mb-3">
+  <label for="formName" class="form-label">Име</label>
+    {{ myFilter.form.name }}
+  </div>
+  <div class="mb-3">
+    <label for="formDistance_lt" class="form-label"></label>
+    {{ myFilter.form.distance_lt }}
+    <span class="form-text">
+      Въведете разстояние в километри.
+    </span>
+    <label for="formDistance_gt" class="form-label"></label>
+    {{ myFilter.form.distance_gt }}
+    <span class="form-text">
+      Въведете разстояние в километри.
+    </span>
+  </div>
+  <div class="mb-3">
+    <label for="formElevation_lt" class="form-label"></label>
+    {{ myFilter.form.elevation_lt }}
+    <span class="form-text">
+      Въведете денивелация в метри.
+    </span>
+    <label for="formElevation_gt" class="form-label"></label>
+    {{ myFilter.form.elevation_gt }}
+    <span class="form-text">
+      Въведете денивелация в метри.
+    </span>
+  </div>
+  {% comment %} {{ myfilter.distance_lt }} {% endcomment %}
+  {% comment %} {{ myFilter.form.as_p }} {% endcomment %}
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
