@@ -4,69 +4,30 @@
     <h3>MAKE A TRAIL</h3>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="field">
-        <label class="label">Name</label>
-            <div class="control">
-                {{ form.name }}
-            </div>
-        </div>
 
-        <div class="field">
-            <label class="label">Message</label>
-            <div class="control">
-                {{ form.description }}
-            </div>
+        <div class="mb-3">
+          <label for="formName" class="form-label">Име</label>
+           {{ form.name }}
+          </div>
+          <div class="mb-3">
+          <label for="formDescription" class="form-label">Описание</label>
+          {{ form.description }}
         </div>
+        <div class='mb-3'>    
+        <label for="formTag" class="form-label">Разположение</label>   
+          {{ form.tag }}
+        </div>
+        <div class="input-group mb-3">
+          {{ form.gpx_file }}
+          <label class="input-group-text" for="inputGroupFile02">Качи GPX трак</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
 
-
-        <div class="select">
-                {{ form.tag }}
-        </div>
-
-        <div class='block'>
-            <div class="file">
-                <label class="file-label">
-                    {{ form.gpx_file }}
-                    <span class="file-cta">
-                        <span class="file-icon">
-                            <i class="fas fa-upload"></i>
-                        </span>
-                        <span class="file-label">
-                            Choose a file…
-                        </span>                    
-                    </span>
-                </label>
-            </div>
-        </div>
-        <div id='file-upload-filename'></div>
-        <div class='block'>
-            <div class="control">
-                <button class="button is-link">Submit</button>
-            </div>
-        </div>
-        <div class='fieldWrapper'>
-            {{ form.gpx_file.errors }}
-        </div>
-
+        {{ form.gpx_file.errors }}
     </form>
 {% endblock %}
 {% block js %}
     <script type="text/javascript">
-        console.log('im here brah')
-        var input = document.getElementById( 'gpxfile' );
-        var infoArea = document.getElementById( 'file-upload-filename' );
-        input.addEventListener( 'change', showFileName );
-        function showFileName( event ) {
-            
-            // the change event gives us the input it occurred in 
-            var input = event.srcElement;
-            
-            // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
-            var fileName = input.files[0].name;
-            
-            // use fileName however fits your app best, i.e. add it into a div
-            infoArea.textContent = 'File name: ' + fileName;
-            infoArea.classList.add('box')
-            }
+        
     </script>
 {% endblock %}
