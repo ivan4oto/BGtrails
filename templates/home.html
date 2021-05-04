@@ -5,10 +5,23 @@
 <div class='section'>
 {% include 'trails/snippets/trail_search.html' %}
 </div>
+
+
+
+
 {% for object in myFilter.qs %}
-    <div>
-        {% include 'trails/snippets/trail_detail.html' %}
-    </div>
+
+<div class="album py-5 bg-light">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				{% include 'trails/snippets/trail_detail.html' %}
+			</div>
+		</div>
+	</div>
+</div>
+
+
 {% endfor %}
 
     {% block js %}    

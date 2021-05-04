@@ -14,7 +14,7 @@ class RegisterForm(forms.Form):
         widget=forms.PasswordInput(
             attrs={
                 "class": "form-control",
-                "id": "user-password"
+                "id": "inputPassword"
             }
         )
     )

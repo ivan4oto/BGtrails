@@ -1,5 +1,37 @@
 {% load static %}
-  <div class="box">
+<div class="card" style="width: 18rem;">
+  <img src='https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/{{ object.get_lat }},{{ object.get_lon }},9,0/300x200?access_token=pk.eyJ1IjoiaXZhbjRvdG8iLCJhIjoiY2tlMGVnbzFxM3V6NDJxbXFzZmhmZ29tcyJ9.jbuxXicfoB-ygV96MaT7pQ' class="card-img-top" alt="Image">
+  <div class="card-body">
+    <h5 class="card-title"><a href={{ object.get_absolute_url }}><strong>{{ object.name }}</strong></a></h5>
+    <p class="card-text">{{ object.description }}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Distance: {{ object.distance }}</li>
+    <li class="list-group-item">Elevation: {{ object.elevation }}</li>
+    <li class="list-group-item">A third item</li>
+  </ul>
+  <div class="card-body">
+    <a href={{ object.gpx_file.url }} class="card-link">
+     <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
+    </a>
+    <a href="#" id='fav-button' class="card-link">
+      {% if object not in user_favs %}
+        <img id='fav-white' src="{% static 'trails/images/icons/favorite_border.svg' %}" alt="Favorite">
+      {% else %}
+        <img id='fav-black' src="{% static 'trails/images/icons/favorite_black.svg' %}" alt="Favorite">
+      {% endif %}
+    </a>
+    <a href={% url 'delete-trail' object.id %} class="card-link">
+      <img src="{% static 'trails/images/icons/delete_black.svg' %}" alt="Delete">
+    </a>
+  </div>
+</div>
+
+
+
+
+
+  {% comment %} <div class="box">
   <article class="media">
     <div class="media-left">
     <a href={{ object.get_absolute_url }}>
@@ -37,7 +69,7 @@
       </nav>
     </div>
   </article>
-</div>
+</div> {% endcomment %}
 {% block js %}
 <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
