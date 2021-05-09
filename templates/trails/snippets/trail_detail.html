@@ -21,9 +21,14 @@
         <img id='fav-black' src="{% static 'trails/images/icons/favorite_black.svg' %}" alt="Favorite">
       {% endif %}
     </a>
-    <a href={% url 'delete-trail' object.id %} class="card-link">
-      <img src="{% static 'trails/images/icons/delete_black.svg' %}" alt="Delete">
-    </a>
+    {% if object.user == user %}
+      <a href={% url 'delete-trail' object.id %} class="card-link">
+        <img src="{% static 'trails/images/icons/delete_black.svg' %}" alt="Delete">
+      </a>
+      <a href={% url 'update-trail' object.id %} class='card-link'>
+      update
+      </a>
+    {% endif %}
   </div>
 </div>
 

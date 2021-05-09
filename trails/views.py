@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
-from .forms import TrailForm
+from .forms import TrailForm, TrailUpdateForm
 from .models import Trail
 from .filters import TrailFilter
 # Create your views here.
@@ -41,8 +41,8 @@ def trail_create_view(request):
             obj.gpx_file = gpx_file
         obj.user = request.user
         obj.save()
-        form = TrailForm()
-        return redirect(to='home')
+        form = TrailUpdateForm(None, instance=obj)
+        return render(request, "trails/update_trail.html", {'form': form}) # redirects to update view for any needed corrections
     
     # print(form.non_field_errors())
     # print(form.has_error('gpx_file'))
@@ -57,6 +57,23 @@ def trail_detail_view(request, pk):
     except Trail.DoesNotExist:
         raise Http404 # render html page, with HTTP status code of 404
     return render(request, "trails/detail_trail.html", {"object": obj})
+
+
+@login_required
+def trail_update_view(request, pk):
+    try:
+        obj = Trail.objects.get(pk=pk)
+    except Trail.DoesNotExist:
+        raise Http404 # render html page, with HTTP status code of 404
+    form = TrailUpdateForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+        return render(request, "trails/detail_trail.html", {"object": obj})
+    context = {}
+    context['form'] = form
+
+    return render(request, "trails/update_trail.html", context)
+
 
 def trail_delete_view(request, pk):
     try:

@@ -91,6 +91,7 @@ venv/
 ENV/
 .vscode
 pyvenv.cfg
+.idea
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -122,3 +123,4 @@ media/
 static/
 *.gpx
 cdn_test/
+
