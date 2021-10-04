@@ -1,17 +1,14 @@
-from trails.storages import MediaStorage
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
-import os
-from .forms import TrailForm
+from .forms import TrailForm, TrailUpdateForm
 from .models import Trail
 from .filters import TrailFilter
-# Create your views here.
 
 
 def home_view(request, *args, **kwargs):
-    objs = Trail.objects.all() # [obj1, obj2, obj3,]
+    objs = Trail.objects.all()
     myFilter = TrailFilter(request.GET, queryset=objs)
     user = request.user
     if user.is_authenticated:
@@ -38,28 +35,14 @@ def trail_create_view(request):
     if form.is_valid():
         obj = form.save(commit=False)
         gpx_file = request.FILES.get('gpx_file')
-        # # s3 file upload
-        # file_directory_within_bucket = 'media/gpx_files/{username}'.format(username=request.user)
-        # file_path_within_bucket = os.path.join(
-        #     file_directory_within_bucket,
-        #     gpx_file.name
-        # )
-        # media_storage = MediaStorage()
-        # if not media_storage.exists(file_path_within_bucket): # avoid overwriting existing file
-        #     media_storage.save(file_path_within_bucket, gpx_file)
-        #     file_url = media_storage.url(file_path_within_bucket)
-        #do some stuff
         if gpx_file:
             obj.gpx_file = gpx_file
             print(type(gpx_file))
         obj.user = request.user
         obj.save()
-        form = TrailForm()
-        return redirect(to='home')
+        form = TrailUpdateForm(None, instance=obj)
+        return render(request, "trails/update_trail.html", {'form': form})
     
-    # print(form.non_field_errors())
-    # print(form.has_error('gpx_file'))
-    # print(form._errors)
     return render(request, "trails/create_trail.html", {"form": form})
 
 
@@ -68,8 +51,25 @@ def trail_detail_view(request, pk):
     try:
         obj = Trail.objects.get(pk=pk)
     except Trail.DoesNotExist:
-        raise Http404 # render html page, with HTTP status code of 404
+        raise Http404
     return render(request, "trails/detail_trail.html", {"object": obj})
+
+
+@login_required
+def trail_update_view(request, pk):
+    try:
+        obj = Trail.objects.get(pk=pk)
+    except Trail.DoesNotExist:
+        raise Http404 # render html page, with HTTP status code of 404
+    form = TrailUpdateForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+        return render(request, "trails/detail_trail.html", {"object": obj})
+    context = {}
+    context['form'] = form
+
+    return render(request, "trails/update_trail.html", context)
+
 
 def trail_delete_view(request, pk):
     try:

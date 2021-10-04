@@ -17,12 +17,12 @@
 
       <div class="col border border-secondary">
         <div class='row'>
-        <div class='col'>
-          <h4>{{ object.distance }}</h4>
-          <small class="text-muted">
-          Distance
-          </small>
-        </div>
+          <div class='col'>
+            <h4>{{ object.distance }}</h4>
+            <small class="text-muted">
+            Distance
+            </small>
+          </div>
         <div class='col'>
           <h4>{{ object.elevation }}</h4>
           <small class="text-muted">
@@ -30,15 +30,21 @@
           </small>
         </div>
         <div class='col'>
-          <a href={{ object.gpx_file.url }}>
-            <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
-                      <small class="text-muted">
-            Download
-          </small>
-          </a>
+          <div class='row'>
+            <a href={{ object.gpx_file.url }}>
+              <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
+              <small class="text-muted">Download</small>
+            </a>
+          </div>
+          <div class='row'>
+            <a href={% url 'update-trail' object.id %}>
+              <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
+              <small class="text-muted">Update</small>
+            </a>
           </div>
         </div>
       </div>
+    </div>
 
   </div>
   <div class="row">
