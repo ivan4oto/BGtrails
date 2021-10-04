@@ -44,15 +44,10 @@
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
   crossorigin="anonymous"></script>
  <script type="text/javascript">
-    console.log('Im here')
-    console.log("{% url 'favourite-trail' object.id %}")  
     var userName = "{{ user.get_username }}"
     var csrfToken = "{{ csrf_token }}"
-    console.log(userName)
-    console.log(csrfToken)
     var favUrl = "{% url 'favourite-trail' object.id %}"
     $("#fav-button").click(function () {
-        console.log('clicked');
         $.ajax({
             type: 'POST',
             url: "{% url 'favourite-trail' object.id %}",
@@ -61,8 +56,7 @@
                 csrfmiddlewaretoken: csrfToken
             },
             success: function (response) {
-              console.log('success')
-              console.log(response)                   
+              console.log('success')                  
                 // display the newly friend to table.
                 var instance = JSON.parse(response["is-fav"]);
             },

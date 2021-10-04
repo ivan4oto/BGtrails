@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <h3 class='title'>This is the about page</h3>
+    <p>{% lorem 4 b random %}</p>
+
+    {% block js %}    
+    {% endblock %}
+
+{% endblock %}

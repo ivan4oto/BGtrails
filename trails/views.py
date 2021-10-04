@@ -1,7 +1,9 @@
+from trails.storages import MediaStorage
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
+import os
 from .forms import TrailForm
 from .models import Trail
 from .filters import TrailFilter
@@ -36,9 +38,20 @@ def trail_create_view(request):
     if form.is_valid():
         obj = form.save(commit=False)
         gpx_file = request.FILES.get('gpx_file')
+        # # s3 file upload
+        # file_directory_within_bucket = 'media/gpx_files/{username}'.format(username=request.user)
+        # file_path_within_bucket = os.path.join(
+        #     file_directory_within_bucket,
+        #     gpx_file.name
+        # )
+        # media_storage = MediaStorage()
+        # if not media_storage.exists(file_path_within_bucket): # avoid overwriting existing file
+        #     media_storage.save(file_path_within_bucket, gpx_file)
+        #     file_url = media_storage.url(file_path_within_bucket)
         #do some stuff
         if gpx_file:
             obj.gpx_file = gpx_file
+            print(type(gpx_file))
         obj.user = request.user
         obj.save()
         form = TrailForm()
@@ -67,3 +80,6 @@ def trail_delete_view(request, pk):
         obj.delete()
         data = {"error": False, "response": "Trail Deleted Successfully"}
         return redirect(to='home')
+
+def about_view(request):
+    return render(request, 'about.html')

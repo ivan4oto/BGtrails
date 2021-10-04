@@ -97,9 +97,10 @@ AWS_S3_REGION_NAME = 'eu-central-1'
 AWS_DEFAULT_ACL = None
 
 
-DEFAULT_FILE_STORAGE = 'trails.storages.MediaStorage'
+DEFAULT_FILE_STORAGE = 'trails.storages.MediaStorage' # custom storage class
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' # default storage
 # STATICFILES_STORAGE = 'trails.storages.StaticStorage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage' # default storage
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
