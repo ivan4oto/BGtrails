@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponse
+import json
 
 from .forms import TrailForm, TrailUpdateForm
 from .models import Trail
@@ -40,35 +41,51 @@ def trail_create_view(request):
             print(type(gpx_file))
         obj.user = request.user
         obj.save()
-        form = TrailUpdateForm(None, instance=obj)
-        return render(request, "trails/update_trail.html", {'form': form})
+        form = TrailForm(None, instance=obj)
+        # return render(request, "trails/update_trail.html", {'form': form})
+        return render(request, "trails/detail_trail.html", {"object": obj, "form": form})
     
     return render(request, "trails/create_trail.html", {"form": form})
 
 
 def trail_detail_view(request, pk):
-    # obj = Trail.objects.get(id=id)
     try:
         obj = Trail.objects.get(pk=pk)
     except Trail.DoesNotExist:
         raise Http404
     return render(request, "trails/detail_trail.html", {"object": obj})
 
-
 @login_required
 def trail_update_view(request, pk):
-    try:
-        obj = Trail.objects.get(pk=pk)
-    except Trail.DoesNotExist:
-        raise Http404 # render html page, with HTTP status code of 404
-    form = TrailUpdateForm(request.POST or None, instance=obj)
-    if form.is_valid():
-        form.save()
-        return render(request, "trails/detail_trail.html", {"object": obj})
-    context = {}
-    context['form'] = form
+    if request.method == 'POST':
+        try:
+            obj = Trail.objects.get(pk=pk)
+        except Trail.DoesNotExist:
+            raise Http404
+        trail_data = {
+            'name': request.POST.get('trail_name'),
+            'distance': request.POST.get('trail_distance'),
+            'elevation': request.POST.get('trail_elevation'),
+            'description': request.POST.get('trail_description')
+            }
+        response_data = {}
+        form = TrailUpdateForm(trail_data or None, instance=obj)
+        if form.is_valid():
+            form.save()
+            response_data['result'] = 'Create post successful!'
+        else:
+            print(form.errors)
+            response_data['result'] = 'Create post NOT succesful'
 
-    return render(request, "trails/update_trail.html", context)
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )
 
 
 def trail_delete_view(request, pk):

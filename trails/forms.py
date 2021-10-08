@@ -25,8 +25,14 @@ class TrailUpdateForm(forms.ModelForm):
     class Meta:
         model = Trail
         fields = [
-            'name'
+            'name',
+            'distance',
+            'elevation',
+            'description'
         ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': "form-control"})
+            'name': forms.TextInput(attrs={'class': "form-control", "id":"trail-name"}),
+            'distance': forms.NumberInput(attrs={'class': "form-control", 'id': 'trail-distance'}),
+            'elevation': forms.NumberInput(attrs={'class': "form-control", 'id': 'trail-elevation'}),
+            'description': forms.Textarea(attrs={'class': "form-control", 'id': 'trail-description'})
         }
