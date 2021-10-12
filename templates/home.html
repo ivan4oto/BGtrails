@@ -10,11 +10,7 @@
         {% include 'trails/snippets/trail_detail.html' %}
     </div>
 {% endfor %}
-
-    {% block js %}    
-    <script src="{% static  'trails/js/jquery-3.6.0.js'%}"></script>
-    {% comment %} <script src="{% static  'trails/js/home.js'%}"></script> {% endcomment %}
-    {% endblock %}
-
 {% endblock %}
-
+{% block js %}
+<script src="{% static 'trails/js/home/home.js' %}"></script>
+{% endblock %}

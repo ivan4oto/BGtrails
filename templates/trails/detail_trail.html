@@ -2,18 +2,16 @@
 {% load static %}
 {% block head %}
  <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
-
+ <link rel='stylesheet' href="{% static 'trails/css/trail_update/trail_update.css' %}">
 {% endblock %}
 
 {% block title %}{{ object.name }}{% endblock %}
   {% block content %}
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="{{object.name}}">Редактирай</button>
-
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Редактиране</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -24,7 +22,7 @@
           {% comment %} {{ form }} {% endcomment %}
             <div class="form-group">
               <label for="trail-name" class="col-form-label">Име:</label>
-              <input type="text" class="form-control" id="trail-name">
+              <input type="text" class="form-control" id="trail-name" placeholder={{ object.name }}>
             </div>
             <div class="form-group">
               <label for="trail-distance" class="col-form-label">Разстояние:</label>
@@ -73,15 +71,11 @@
         <div class='col'>
           <div class='row'>
             <a href={{ object.gpx_file.url }}>
-              <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
-              <small class="text-muted">Download</small>
+               <button type="button" id="btn-download" class="btn btn-info" data-whatever="{{object.name}}">Изтегли</button>
             </a>
           </div>
           <div class='row'>
-            <a href={% url 'update-trail' object.id %}>
-              <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
-              <small class="text-muted">Update</small>
-            </a>
+            <button type="button" id="btn-edit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="{{object.name}}">Редактирай</button>
           </div>
         </div>
       </div>
@@ -112,10 +106,8 @@
    <div style="position: inherit;" id="graphdiv2"></div>
  </div>
 {% endblock %}
+  
   {% block js %}
-    {{ block.super }}
-
-    
      <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
      <script src="{% static 'trails/js/dygraph.js' %}"></script>
 
@@ -136,20 +128,20 @@
             {}          // options
           );
       </script>
-
-      <script type="text/javascript">
+        <script type="text/javascript">
         $('#exampleModal').on('show.bs.modal', function (event) {
+          console.log('hi')
           var button = $(event.relatedTarget) // Button that triggered the modal
           var recipient = button.data('whatever') // Extract info from data-* attributes
           // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
           // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
           var modal = $(this)
-          modal.find('.modal-title').text('New message to ' + recipient)
+          modal.find('.modal-title').text(recipient)
           modal.find('.modal-body input').val(recipient)
-        }) 
+        })
       </script>
 
-      <script src="{% static 'trails/js/ajax_trail_edit.js' %}"></script>
+      <script src="{% static 'trails/js/detail/ajax_trail_edit.js' %}"></script>
       <script src="{% static  'trails/js/togeojson.js'%}"></script>
       <script src="{% static 'trails/js/mymap.js' %}"></script>
   {% endblock %}
