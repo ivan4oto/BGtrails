@@ -76,8 +76,8 @@
      <script src="{% static 'trails/js/dygraph.js' %}"></script>
 
       <script type="text/javascript">
-        var objLat = "{{ object.get_lat }}";
-        var objLon = "{{ object.get_lon }}";
+        var objLat = "{{ object.location.x }}";
+        var objLon = "{{ object.location.y }}";
         var objGpxPath = "{{ object.gpx_file.url }}";
         var objName = "{{ object.name }}";
 
@@ -106,6 +106,5 @@
       </script>
 
       <script src="{% static 'trails/js/detail/ajax_trail_edit.js' %}"></script>
-      <script src="{% static  'trails/js/togeojson.js'%}"></script>
       <script src="{% static 'trails/js/mymap.js' %}"></script>
   {% endblock %}

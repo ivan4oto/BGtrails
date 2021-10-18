@@ -107,6 +107,13 @@ module.exports = (env, argv) => {
                       exposes: ["$", "jQuery"],
                     },
                 },
+                {
+                    test: require.resolve("@mapbox/togeojson"),
+                    loader: "expose-loader",
+                    options: {
+                      exposes: ["toGeoJSON"],
+                    },
+                },
                 // styles loader
                 {
                     test: /\.(sa|sc|c)ss$/,
