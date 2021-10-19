@@ -2,11 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 import json
-
+from .services import TrailServiceHelper
 from .forms import TrailForm, TrailUpdateForm
 from .models import Trail
 from .filters import TrailFilter
-
 
 def home_view(request, *args, **kwargs):
     objs = Trail.objects.all()
@@ -34,16 +33,19 @@ def trail_type_view(request, tag):
 def trail_create_view(request):
     form = TrailForm(request.POST or None, request.FILES or None)
     if form.is_valid():
-        obj = form.save(commit=False)
         gpx_file = request.FILES.get('gpx_file')
-        if gpx_file:
-            obj.gpx_file = gpx_file
-            print(type(gpx_file))
-        obj.user = request.user
-        obj.save()
-        form = TrailForm(None, instance=obj)
-        # return render(request, "trails/update_trail.html", {'form': form})
-        return render(request, "trails/detail_trail.html", {"object": obj, "form": form})
+
+        trail_object = TrailServiceHelper().create_trail(
+            name=form.cleaned_data.get('name'),
+            description=form.cleaned_data.get('description'),
+            distance=form.cleaned_data.get('distance'),
+            elevation=form.cleaned_data.get('elevation'),
+            gpx_file=gpx_file,
+            user=request.user,
+            tag=form.cleaned_data.get('tag')
+        )
+        form = TrailForm(None, instance=trail_object)
+        return render(request, "trails/detail_trail.html", {"object": trail_object, "form": form})
     
     return render(request, "trails/create_trail.html", {"form": form})
 
@@ -71,7 +73,10 @@ def trail_update_view(request, pk):
         response_data = {}
         form = TrailUpdateForm(trail_data or None, instance=obj)
         if form.is_valid():
-            form.save()
+            TrailServiceHelper().update_trail(
+                form=form.cleaned_data,
+                pk=pk
+                )
             response_data['result'] = 'Create post successful!'
         else:
             print(form.errors)

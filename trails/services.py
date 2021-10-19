@@ -1,97 +1,72 @@
-from math import radians, cos, sin, asin, sqrt
-import json
+from django.core.exceptions import ValidationError
+from django.core.files import File
+from django.contrib.gis.geos import Point
+from django.contrib.auth import get_user_model
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from geojson_transformer import GeoJsonTransformer
+# from io import StringIO 
+import os
 
-from lxml import etree
-import matplotlib.path as mplPath
-import numpy as np
-
-
-
-def haversine(lon1, lat1, lon2, lat2):
-    """
-    Calculate the great circle distance between two points
-    on the earth (specified in decimal degrees)
-    """
-    # convert decimal degrees to radians
-    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
-
-    # haversine formula
-    dlon = lon2 - lon1
-    dlat = lat2 - lat1
-    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-    c = 2 * asin(sqrt(a))
-    r = 6371  # Radius of earth in kilometers. Use 3956 for miles
-    return c * r
-
-def get_starting_point(gpx_file):
-    parser = etree.XMLParser(remove_blank_text=True)
-    tree = etree.parse(gpx_file, parser)
-    tree = strip_ns_prefix(tree)
-    root = tree.getroot()
-    for element in root.iter('trkpt'):
-        if element.attrib.get('lat') and element.attrib.get('lon'):
-            lat = element.attrib.get('lat')
-            lon = element.attrib.get('lon')
-    return (float(lat), float(lon),)
+from .models import Trail
 
 
-def get_total_distance(gpx_file):
-    parser = etree.XMLParser(remove_blank_text=True)
-    tree = etree.parse(gpx_file, parser)
-    tree = strip_ns_prefix(tree)
-    root = tree.getroot()
-    total_distance = 0
-    elements_list = list(root.iter("trkpt"))
-    for e in range(len(elements_list)-1):
-        lat1, lon1 = float(elements_list[e].get('lat')), float(elements_list[e].get('lon'))
-        lat2, lon2 = float(elements_list[e+1].get('lat')), float(elements_list[e+1].get('lon'))
-        total_distance += haversine(lon1, lat1, lon2, lat2)
-    return round(total_distance, 2)
+User = get_user_model()
 
+# Trail Model Service
 
+class TrailServiceHelper():
+    
+    def create_trail(self, *, name: str, description: str, distance: float, elevation: int, gpx_file: File, user: User, tag: str) -> Trail:
+        if gpx_file is None:
+            raise ValidationError('Trail objects must have a gpx file.')
 
-def get_total_elevation(gpx_file):
-    parser = etree.XMLParser(remove_blank_text=True)
-    tree = etree.parse(gpx_file, parser)
-    tree = strip_ns_prefix(tree)
-    root = tree.getroot()
-    total_elevation = 0
-    elements_list = list(root.iter("ele"))
-    for e in range(len(elements_list)-1):
-        ele1, ele2 = elements_list[e].text, elements_list[e+1].text
-        if ele1 < ele2:
-            total_elevation += int(float(ele2)) - int(float(ele1))
-    return total_elevation
+        transformer = GeoJsonTransformer(in_memory_file=gpx_file)
+        trail_object = Trail(
+            name=name,
+            description=description,
+            distance=distance if distance else transformer.total_distance,
+            elevation=elevation if elevation else transformer.total_elevation,
+            location=Point(transformer.starting_point[0], transformer.starting_point[1]),
+            gpx_file=gpx_file,
+            csv_file=extract_csv_file(transformer=transformer),
+            user=user,
+            tag=tag
+        )
+        trail_object.full_clean()
+        trail_object.save()
 
-def strip_ns_prefix(tree):
-    #xpath query for selecting all element nodes in namespace
-    query = "descendant-or-self::*[namespace-uri()!='']"
-    #for each element returned by the above xpath query...
-    for element in tree.xpath(query):
-        #replace element name with its local name
-        element.tag = etree.QName(element).localname
-    return tree
+        return trail_object
 
-poly = [190, 50, 500, 310]
-bbPath = mplPath.Path(np.array([[poly[0], poly[1]],
-                     [poly[1], poly[2]],
-                     [poly[2], poly[3]],
-                     [poly[3], poly[0]]]))
+    def update_trail(self, *, form: dict, pk: int, gpx_file=None) -> Trail:
+        trail_object = Trail.objects.get(pk=pk)
+        for attr, val in form.items():
+            if val is not None:
+                setattr(trail_object, attr, val)
+        trail_object.save()
 
-bbPath.contains_point((200, 100))
+        return trail_object
 
+# Transformer Service
 
-mountain_dict = {
-    "Stara Planina": '../cdn_test/media/polygons/stara_planina.json'
-}
-point = (24.669800, 42.514626)
+def extract_distance(*, gpx_file=File) -> float:
+    distance = GeoJsonTransformer(in_memory_file=gpx_file).total_distance
+    return distance
 
+def extract_elevation(*, gpx_file=File) -> int:
+    elevation = GeoJsonTransformer(in_memory_file=gpx_file).total_elevation
+    return elevation
 
-def localise_point(point, mountain_dict):
-    for location_name, file_path in mountain_dict.items():
-        with open(file_path, encoding='utf-8-sig') as f:
-            jsonfile = json.load(f)
-            polygon = jsonfile.get('polygon')
-            polyPath = mplPath.Path(np.array(polygon))
-            if polyPath.contains_point(point):
-                return jsonfile.get('name')
+def extract_starting_point(*, gpx_file=File) -> Point:
+    transformer = GeoJsonTransformer(in_memory_file=gpx_file)
+    starting_point = Point(transformer.starting_point[0], transformer.starting_point[1])
+    return starting_point
+
+def extract_csv_file(*, transformer=GeoJsonTransformer) -> File:   
+    transformer.to_csv()
+    csv_name = transformer.name + '.' + 'csv'
+    f = open(csv_name, 'rb')
+    prepared_file = File(f)
+    csv_uploaded_file = InMemoryUploadedFile(f, '', csv_name, 'text/csv', prepared_file.size, None)
+    os.remove(csv_name)
+
+    return csv_uploaded_file
