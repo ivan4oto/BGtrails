@@ -114,6 +114,20 @@ module.exports = (env, argv) => {
                       exposes: ["toGeoJSON"],
                     },
                 },
+                {
+                    test: require.resolve("simplify-geojson"),
+                    loader: "expose-loader",
+                    options: {
+                      exposes: ["simplify"],
+                    },
+                },
+                {
+                    test: require.resolve("@mapbox/mapbox-sdk"),
+                    loader: "expose-loader",
+                    options: {
+                      exposes: ["client"],
+                    },
+                },
                 // styles loader
                 {
                     test: /\.(sa|sc|c)ss$/,

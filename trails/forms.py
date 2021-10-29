@@ -16,7 +16,7 @@ class TrailForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': "form-control"}),
             'description': forms.Textarea(attrs={'class': "form-control"}),
-            'gpx_file': forms.FileInput(attrs={'class': 'form-control'}),
+            'gpx_file': forms.FileInput(attrs={'class': 'form-control', 'id': 'form-file'}),
             'tag': forms.Select(attrs={'class': 'form-select'}),
 
         }
