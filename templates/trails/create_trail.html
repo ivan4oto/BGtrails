@@ -4,38 +4,30 @@
     <h3>MAKE A TRAIL</h3>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="field">
-        <label class="label">Name</label>
-            <div class="control">
-                {{ form.name }}
-            </div>
-        </div>
 
-        <div class="field">
-            <label class="label">Message</label>
-            <div class="control">
-                {{ form.description }}
-            </div>
+        <div class="mb-3">
+          <label for="formName" class="form-label">Име</label>
+           {{ form.name }}
+          </div>
+          <div class="mb-3">
+          <label for="formDescription" class="form-label">Описание</label>
+          {{ form.description }}
         </div>
-
-
-        <div class="file">
-            <label class="file-label">
-                {{ form.gpx_file }}
-                <span class="file-cta">
-                    <span class="file-icon">
-                        <i class="fas fa-upload"></i>
-                    </span>
-                    <span class="file-label">
-                        Choose a file…
-                    </span>
-                </span>
-            </label>
+        <div class='mb-3'>    
+        <label for="formTag" class="form-label">Разположение</label>   
+          {{ form.tag }}
         </div>
-            <div class="control">
-                <button class="button is-link">Submit</button>
-            </div>
+        <div class="input-group mb-3">
+          {{ form.gpx_file }}
+          <label class="input-group-text" for="inputGroupFile02">Качи GPX трак</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+        {{ form.gpx_file.errors }}
     </form>
 {% endblock %}
 {% block js %}
+    <script type="text/javascript">
+        
+    </script>
 {% endblock %}

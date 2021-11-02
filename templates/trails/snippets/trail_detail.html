@@ -4,7 +4,7 @@
     <div class="media-left">
     <a href={{ object.get_absolute_url }}>
       <figure class="image is-128x128">
-        <img src='https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/{{ object.get_lat }},{{ object.get_lon }},9,0/300x200?access_token=pk.eyJ1IjoiaXZhbjRvdG8iLCJhIjoiY2tlMGVnbzFxM3V6NDJxbXFzZmhmZ29tcyJ9.jbuxXicfoB-ygV96MaT7pQ' alt="Image">
+        <img src='https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/{{ object.location.x }},{{ object.location.y }},9,0/300x200?access_token=pk.eyJ1IjoiaXZhbjRvdG8iLCJhIjoiY2tlMGVnbzFxM3V6NDJxbXFzZmhmZ29tcyJ9.jbuxXicfoB-ygV96MaT7pQ' alt="Image">
       </figure>
     </a>
     </div>
@@ -23,15 +23,13 @@
           <a href={{ object.gpx_file.url }}>
             <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
           </a>
-          {% if object not in user_favs %}
-            <a href={% url 'favourite-trail' object.id %}>
-              <img src="{% static 'trails/images/icons/favorite_border.svg' %}" alt="Favorite">
+            <a href='' id='fav-button'>
+              {% if object not in user_favs %}
+              <img id='fav-white' src="{% static 'trails/images/icons/favorite_border.svg' %}" alt="Favorite">
+              {% else %}
+              <img id='fav-black' src="{% static 'trails/images/icons/favorite_black.svg' %}" alt="Favorite">
+              {% endif %}
             </a>
-          {% else %}
-            <a href={% url 'favourite-trail' object.id %}>
-              <img src="{% static 'trails/images/icons/favorite_black.svg' %}" alt="Favorite">
-            </a>
-          {% endif %}
           <a href={% url 'delete-trail' object.id %}>
             <img src="{% static 'trails/images/icons/delete_black.svg' %}" alt="Delete">
           </a>

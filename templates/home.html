@@ -1,6 +1,5 @@
-  
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block content %}
 <div class='section'>
@@ -12,4 +11,6 @@
     </div>
 {% endfor %}
 {% endblock %}
-
+{% block js %}
+<script src="{% static 'trails/js/home/home.js' %}"></script>
+{% endblock %}

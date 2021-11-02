@@ -2,5 +2,12 @@
 
 
 {% block content %}
- <h2>Здрасти юзър, Някойситам</h2>
+ <h3 class='title'>{{ user.get_username }}</h3>
+ <h2 class='subtitle'>Favourites:</h2>
+ {% for fav in favs %}
+    <div>
+        {% comment %} {% include 'trails/snippets/trail_detail.html' %} {% endcomment %}
+        <h2>{{ fav.name }}</h2>
+    </div>
+{% endfor %}
 {% endblock %}
