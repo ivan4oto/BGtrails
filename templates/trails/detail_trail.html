@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% block head %}
- <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
  <link rel='stylesheet' href="{% static 'trails/css/trail_update/trail_update.css' %}">
+ <link rel='stylesheet' href="{% static 'detail.css' %}">
 {% endblock %}
 
 {% block title %}{{ object.name }}{% endblock %}
@@ -72,40 +72,14 @@
 {% endblock %}
   
   {% block js %}
-     <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
-     <script src="{% static 'trails/js/dygraph.js' %}"></script>
-
-      <script type="text/javascript">
+    <script type="text/javascript">
         var objLat = "{{ object.location.x }}";
         var objLon = "{{ object.location.y }}";
         var objGpxPath = "{{ object.gpx_file.url }}";
         var objName = "{{ object.name }}";
-
         var editUrl = "{% url 'update-trail' object.id %}"
-      </script>
-
-      <script type="text/javascript">
         var csvPath = "{{ object.csv_file.url }}"
-          g2 = new Dygraph(
-            document.getElementById("graphdiv2"),
-            csvPath, // path to CSV file
-            {}          // options
-          );
-      </script>
-        <script type="text/javascript">
-        $('#exampleModal').on('show.bs.modal', function (event) {
-          console.log('hi')
-          var button = $(event.relatedTarget) // Button that triggered the modal
-          var recipient = button.data('whatever') // Extract info from data-* attributes
-          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-          var modal = $(this)
-          modal.find('.modal-title').text(recipient)
-          modal.find('.modal-body input').val(recipient)
-        })
-      </script>
+    </script>
 
-      <script src="{% static 'trails/js/detail/ajax_trail_edit.js' %}"></script>
-      <script src="{% static 'trails/js/mymap.js' %}"></script>
-      {% comment %} <script type="module" src="{% static 'trails/js/detail/static_trail_edit.js' %}"></script> {% endcomment %}
+    <script src="{% static 'detail.bundle.js' %}"></script>
   {% endblock %}
