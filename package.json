@@ -29,15 +29,10 @@
     "copy-webpack-plugin": "^5.1.2",
     "css-loader": "^2.1.1",
     "del-cli": "^3.0.1",
-    "expose-loader": "^1.0.3",
-    "image-webpack-loader": "^5.1.0",
-    "imagemin-webpack-plugin": "^2.4.2",
     "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.14.1",
-    "optimize-css-assets-webpack-plugin": "^5.0.4",
     "sass-loader": "^7.3.1",
     "style-loader": "^0.23.1",
-    "svg-url-loader": "^2.3.3",
     "terser-webpack-plugin": "^4.2.3",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
@@ -50,6 +45,8 @@
     "@popperjs/core": "^2.10.2",
     "simplify-geojson": "^1.0.4",
     "@mapbox/togeojson": "^0.16.0",
-    "@mapbox/mapbox-sdk": "^0.13.2"
+    "@mapbox/mapbox-sdk": "^0.13.2",
+    "mapbox-gl": "^2.5.1",
+    "dygraphs": "^2.1.0"
   }
 }

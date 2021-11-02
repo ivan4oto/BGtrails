@@ -1,0 +1,15 @@
+// Required
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+// Your variable overrides
+$body-bg: $gray-100;
+
+// Bootstrap and its default variables
+
+// Optional
+@import "~bootstrap/scss/bootstrap";
+// @import "material-icons";
+
+// etc
