@@ -9,65 +9,72 @@
   {% block content %}
   <!-- Trail Update Modal -->
   {% include 'trails/snippets/trail_edit_modal.html' %}
+  <div class='container ctn-light'>
 
-  <!-- Border content -->  
-  <div class="border border-secondary mt-2">
-    <div class="row m-2">
+    <!-- Border content -->  
+    <div class="mt-2">
+      <div class="row m-2">
 
-      <div class="col border border-secondary">
-        <h3 class="title">{{ object.name }}</h3>
-      </div>
+        <div class="col">
+          <h3 class="title">{{ object.name }}</h3>
+        </div>
 
-      <div class="col border border-secondary">
-        <div class='row'>
+        <div class="col">
+          <div class='row'>
+            <div class='col'>
+              <h4>{{ object.distance }}</h4>
+              <small class="text-muted">
+              Distance
+              </small>
+            </div>
           <div class='col'>
-            <h4>{{ object.distance }}</h4>
+            <h4>{{ object.elevation }}</h4>
             <small class="text-muted">
-            Distance
+            Elevation
             </small>
           </div>
-        <div class='col'>
-          <h4>{{ object.elevation }}</h4>
-          <small class="text-muted">
-          Elevation
-          </small>
-        </div>
-        <div class='col'>
-          <div class='row'>
-            <a href={{ object.gpx_file.url }}>
-               <button type="button" id="btn-download" class="btn btn-info" data-whatever="{{object.name}}">Изтегли</button>
-            </a>
-          </div>
-          <div class='row'>
-            <button type="button" id="btn-edit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="{{object.name}}">Редактирай</button>
+          <div class='col'>
+            <div class='row'>
+              <a href={{ object.gpx_file.url }}>
+                <button type="button" id="btn-download" class="btn btn-info" data-whatever="{{object.name}}">Изтегли</button>
+              </a>
+            </div>
+            <div class='row'>
+              <button type="button" id="btn-edit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="{{object.name}}">Редактирай</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-  </div>
-  <div class="row">
-    <div class="col">
-      1 of 3
     </div>
-    <div class="col">
-      2 of 3
-    </div>
-    <div class="col">
-      3 of 3
-    </div>
-  </div>
-
     <div class="row">
-      <!-- MAP content --> 
-      <div class="col-sm-8">
-        <div id="map"></div>
+      <div class="col">
+        1 of 3
       </div>
-      <!-- Description content --> 
-      <div class="col-sm-4"><p>{% lorem 3 b random %}</p></div>
+      <div class="col">
+        2 of 3
+      </div>
+      <div class="col">
+        3 of 3
+      </div>
     </div>
-   <!-- Elevation Graph content --> 
-   <div style="position: inherit;" id="graphdiv2"></div>
+  
+      <div class="row">
+        <!-- MAP content --> 
+        <div class="col-sm-8">
+          <div id="map"></div>
+          <!-- Elevation Graph content --> 
+          <div style='divStyle'></div>
+            <div id="graphdiv2"></div>
+          </div>
+        <!-- Description content --> 
+        <div class="col-sm-4 dscrp mt-2 mb-2">
+          <p>{% lorem 3 b random %}</p>
+        </div>
+      </div>
+
+  </div>
+
  </div>
 {% endblock %}
   

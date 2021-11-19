@@ -1,4 +1,5 @@
-import './elevation_plot' // Elevation graph
+// import './elevation_plot' // Elevation graph
+import './newGraph'
 import './map' // Mapbox code
 import "./main.scss";
 import "./edit/ajax_cookie_csrf" // cookie and csrf

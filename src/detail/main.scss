@@ -1,7 +1,13 @@
 @import '~mapbox-gl/dist/mapbox-gl.css';
+@import "dygraphs";
 
 .mapboxgl-canvas {
-    position: relative;
-    height: 100%;
-    width: 100%; } 
+    position: inherit;
+    height: 430px;
+    width: 100%; }
 
+
+.dscrp {
+    height: 430px;
+    overflow-y: scroll;
+}

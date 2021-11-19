@@ -1,15 +1,93 @@
 // Required
 @import "~bootstrap/scss/functions";
+// @import "~bootstrap/scss/variables";
+
+// Your variable overrides
+$base-color:               #e9f1ed;
+$base-color-darker:        #668575;
+$base-color-lighter:       #f2f8f5;
+$base-white:               #f7f8f4;
+$body-bg:                    $base-color;
+$custom-cyan:                     #22c2ce;
+$custom-cyan-opacity:             #22c3cea2;
+
+$theme-colors: (
+  "primary": $custom-cyan,
+  "secondary": $base-color-darker
+);
+
+// $nav-link-hover-color:     #22c2ce;
+$nav-link-default-color:   rgb(16, 17, 17);
+// $nav-link-color: pink;
+$nav-link-hover-color: $custom-cyan;
+
+
+
+
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {   
+  border-color: $custom-cyan-opacity;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(104, 239, 232, 0.6);
+  outline: 0 none;
+}
+
+
+$link-color:                 $nav-link-default-color;
+
+.navbar-light {
+    background-color:        $base-white;
+}
+
+.main-ctn {
+    margin-top:              25px;
+    background-color:        $base-white;
+}
+
+.ctn-light {
+    background-color: $base-color-lighter;
+}
+
+// Navbar button hover background color
+.nav-btn:hover {
+    background-color:        $base-color-lighter;
+    text-decoration: red;
+}
+
+
+// .btn-dark{
+//     color: pink;
+//     background-color: pink;
+// }
+
+// .btn-dark:hover {
+//     color: $base-white;
+//     background-color: $base-color-darker;
+// }
+
+
+
+// Bootstrap and its default variables
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
-// Your variable overrides
-$body-bg: $gray-100;
-
-// Bootstrap and its default variables
 
 // Optional
 @import "~bootstrap/scss/bootstrap";
-// @import "material-icons";
+
 
 // etc
