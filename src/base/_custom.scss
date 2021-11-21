@@ -9,17 +9,21 @@ $base-color-lighter:       #f2f8f5;
 $base-white:               #f7f8f4;
 $body-bg:                    $base-color;
 $custom-cyan:                     #22c2ce;
+$custom-cyan-darker:              #1c99a1;
 $custom-cyan-opacity:             #22c3cea2;
 
 $theme-colors: (
   "primary": $custom-cyan,
-  "secondary": $base-color-darker
+  "secondary": $base-color-darker,
+  "light": $base-white,
+  "danger": $base-white
 );
 
 // $nav-link-hover-color:     #22c2ce;
-$nav-link-default-color:   rgb(16, 17, 17);
+$nav-link-default-color: $custom-cyan-darker;
 // $nav-link-color: pink;
 $nav-link-hover-color: $custom-cyan;
+
 
 
 
@@ -61,6 +65,8 @@ $link-color:                 $nav-link-default-color;
 .ctn-light {
     background-color: $base-color-lighter;
 }
+
+
 
 // Navbar button hover background color
 .nav-btn:hover {

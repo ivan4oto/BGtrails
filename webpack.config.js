@@ -10,7 +10,9 @@ module.exports = {
         base: './src/base/index.js',
         detail: './src/detail/index.js',
         home: './src/home/index.js',
-        create: './src/create/index.js'
+        create: './src/create/index.js',
+        signup: './src/account/create/index.js',
+        signin: './src/account/login/index.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),

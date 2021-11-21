@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-# from django.conf import settings
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 from trails.views import trail_create_view, trail_detail_view, home_view, trail_delete_view, trail_type_view, about_view, trail_update_view
@@ -32,7 +32,7 @@ urlpatterns = [
     path('update-trail/<int:pk>/', trail_update_view, name='update-trail'),
     path('type-trail/<str:tag>/', trail_type_view, name='type-trail'),
     path('register', register_view, name='register'),
-    path('login', login_view, name='login'),
+    path(settings.LOGIN_URL, login_view, name='login'),
     path('logout', logout_view, name='logout'),
     path('user/<str:username>/', user_detail, name='user-detail'),
     path('favourite-trail/<int:pk>/', favourite_trail, name='favourite-trail')

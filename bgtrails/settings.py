@@ -151,3 +151,6 @@ STATIC_URL = '/dist/'
 # if DEBUG:
 #     MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
     # STATIC_ROOT.mkdir(parents=True, exist_ok=True)
+
+
+LOGIN_URL = 'login'

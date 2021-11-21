@@ -1,0 +1,27 @@
+@import "../../base/custom";
+
+.signupForm {
+    background-color: rgba($color: $custom-cyan-darker, $alpha: 0.7);
+    border-radius: 5px;
+    color: $base-white;
+    width: 300px;
+    margin: 60px auto;
+}
+
+.signupTitle {
+    width: 300px;
+    background-color: rgba($color: $custom-cyan-darker, $alpha: 1);
+    color: $base-white;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.btn-light {
+    color: $custom-cyan-darker
+}
+
+.btn-light:hover {
+    color: $base-white;
+    background-color: $custom-cyan;
+    border-color: $custom-cyan;
+  }

@@ -1,30 +1,51 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    <h3>MAKE A TRAIL</h3>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
 
+<div class='container'>
+  <h3>Качи GPX трак</h3>
+  <div class='border p-2'>
+      <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+    
+      <div class="mb-3">
+        <label for="formName" class="form-label"><h6>Име</h6></label>
+
+        <p class='text-muted'><em><small>Изберете подходящо име за вашия маршрут. Обикновено това е <начална точка> -
+         <важно място>- <крайна точка>. Пример: "Паниците - х.Рай - вр. Ботев"</small></em></p>
+
+          {{ form.name }}
+        </div>
         <div class="mb-3">
-          <label for="formName" class="form-label">Име</label>
-           {{ form.name }}
-          </div>
-          <div class="mb-3">
-          <label for="formDescription" class="form-label">Описание</label>
-          {{ form.description }}
-        </div>
-        <div class='mb-3'>    
-        <label for="formTag" class="form-label">Разположение</label>   
-          {{ form.tag }}
-        </div>
-        <div class="input-group mb-3">
-          {{ form.gpx_file }}
-          <label class="input-group-text" for="inputGroupFile02">Качи GPX трак</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <label for="formDescription" class="form-label"><h6>Описание</h6></label>
 
-        {{ form.gpx_file.errors }}
+        <p class='text-muted'><em><small>Опишете маршрута, ако смятате за необходимо. Кратко описание, което да
+          включва описание на терена, особености за различните сезони, времетраене, водоизточници и т.н. </small></em></p>
+
+        {{ form.description }}
+      </div>
+      <div class='mb-3'>    
+      <label for="formTag" class="form-label"><h6>Категория</h6></label>
+          <p class='text-muted'><em><small>Изберете категория от падащото меню. Ако трака е маршрут на състезание изберете
+           "състезание", ако е обикновен туристически маршрут изберете неговото местоположение от изброените планини.</small></em></p>
+   
+        {{ form.tag }}
+      </div>
+      <h6>GPX трак</h6>
+      <p class='text-muted'><em><small>Изберете GPX трак, който ще бъде качен на сайта.</small></em></p>
+      <div class="input-group mb-3">
+        {{ form.gpx_file }}
+      </div>
+
+      <button type="submit" class="btn btn-primary">Изпрати</button>
+
+      {{ form.gpx_file.errors }}
+      
     </form>
+  </div>
+</div>
+
+
 {% endblock %}
 {% block js %}
     <script type="text/javascript">
