@@ -32,6 +32,7 @@ module.exports = {
     ],
     module: {
         rules: [
+            // styles loader
             {
                 test: /\.(sa|sc|c)ss$/,
                 use: [
@@ -39,7 +40,24 @@ module.exports = {
                     "css-loader",
                     "sass-loader"
                 ],
-            }
+            },
+            // fonts loader
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "fonts/[name].[ext]"
+                        }
+                    },
+                ],
+            },
+            // svg inline 'data:image' loader
+            {
+                test: /\.svg$/,
+                loader: "svg-url-loader"
+            },
         ]
     }
 };
