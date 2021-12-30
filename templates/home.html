@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block head %}
+ <link rel='stylesheet' href="{% static 'home.css' %}">
+{% endblock %}
 {% block content %}
-<div class='section'>
-{% include 'trails/snippets/trail_search.html' %}
+<div class='container'>
+    <div class='section'>
+    {% include 'trails/snippets/search_bar.html' %}
+    </div>
 </div>
 {% for object in myFilter.qs %}
-    <div>
-        {% include 'trails/snippets/trail_detail.html' %}
-    </div>
+<div class='container main-ctn'>
+    {% include 'trails/snippets/trail_detail.html' %}
+</div>
 {% endfor %}
 {% endblock %}
 {% block js %}

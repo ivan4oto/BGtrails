@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.forms import widgets
 
 non_allowed_usernames = ['abc']
 # check for unique email & username
@@ -7,8 +8,26 @@ non_allowed_usernames = ['abc']
 User = get_user_model()
 
 class RegisterForm(forms.Form):
-    username = forms.CharField()
-    email = forms.EmailField()
+    username = forms.CharField(
+        label='Username',
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "id": "user-username"
+            }
+        )
+    )
+
+    email = forms.EmailField(
+        label='Email',
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control",
+                "id": "user-email"
+            }
+        )
+    )
+
     password1 = forms.CharField(
         label='Password',
         widget=forms.PasswordInput(

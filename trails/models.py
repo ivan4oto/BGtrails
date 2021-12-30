@@ -15,6 +15,7 @@ fs = FileSystemStorage(location='cdn_test/media')
 class Trail(models.Model):
     TAG_CHOICES = [
         ('KE', 'Ком Емине'),
+        ('RC', 'Състезание'),
         ('RL', 'Рила'),
         ('VS', 'Витоша'),
         ('SP', 'Стара Планина'),

@@ -1,40 +1,52 @@
 {% load static %}
-  <div class="box">
-  <article class="media">
-    <div class="media-left">
-    <a href={{ object.get_absolute_url }}>
-      <figure class="image is-128x128">
-        <img src='https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/{{ object.location.x }},{{ object.location.y }},9,0/300x200?access_token=pk.eyJ1IjoiaXZhbjRvdG8iLCJhIjoiY2tlMGVnbzFxM3V6NDJxbXFzZmhmZ29tcyJ9.jbuxXicfoB-ygV96MaT7pQ' alt="Image">
-      </figure>
-    </a>
+
+<div class="card p-1 border-primary" style="width: 18rem;">
+  <a href={{ object.get_absolute_url }}>
+    <img class="card-img-top p-2" src='https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/{{ object.location.x }},{{ object.location.y }},9,0/300x200?access_token=pk.eyJ1IjoiaXZhbjRvdG8iLCJhIjoiY2tlMGVnbzFxM3V6NDJxbXFzZmhmZ29tcyJ9.jbuxXicfoB-ygV96MaT7pQ' alt="Card image cap">
+  </a>
+  <div class="card-body">
+    <div class='mb-3 border-bottom'>
+      <a href={{ object.get_absolute_url }} class='text-decoration-none'>
+        <h4 class="card-title">{{ object.name }}</h5>
+      </a>
     </div>
-    <div class="media-content">
-      <div class="content">
-        <p>
-          <a href={{ object.get_absolute_url }}><strong>{{ object.name }}</strong></a>
-          <br>
-          <small>Distance: {{ object.distance }}</small> <small>Elevation: {{ object.elevation }} </small>
-          <br>
-          {{ object.description }}
-        </p>
+    <div class="d-flex flex-row">
+      <div class='d-flex flex-column'>
+        <span class="smalltxt">Разстояние</span>
+        <span class="medtxt">{{ object.distance }} км</span>
       </div>
-      <nav class="level is-mobile">
-        <div class="level-left">
-          <a href={{ object.gpx_file.url }}>
-            <img src="{% static 'trails/images/icons/download_black.svg' %}" alt="Download">
-          </a>
-            <a href='' id='fav-button'>
-              {% if object not in user_favs %}
-              <img id='fav-white' src="{% static 'trails/images/icons/favorite_border.svg' %}" alt="Favorite">
-              {% else %}
-              <img id='fav-black' src="{% static 'trails/images/icons/favorite_black.svg' %}" alt="Favorite">
-              {% endif %}
-            </a>
-          <a href={% url 'delete-trail' object.id %}>
-            <img src="{% static 'trails/images/icons/delete_black.svg' %}" alt="Delete">
-          </a>
-        </div>
-      </nav>
+      <div class='d-flex flex-column mx-3 '>
+        <span class="smalltxt">Денивелация</span>
+        <span class="medtxt">{{ object.elevation }} м</span>
+      </div>
     </div>
-  </article>
+    <div class='d-flex flex-row-reverse mt-2 p-1 border-top'>
+      <a href={{ object.gpx_file.url }} class='mx-1'>
+        <span class="material-icons">
+          file_download
+        </span>
+      </a>
+      <a href={% url 'delete-trail' object.id %}>
+        <span class="material-icons mx-1">
+          delete_forever
+        </span>          
+      </a>
+
+      <a href='' id='fav-button' class='mx-1'>
+        {% if object not in user_favs %}
+          <span class="material-icons">
+            favorite_border
+          </span>
+        {% else %}
+          <span class="material-icons">
+            favorite
+          </span>
+        {% endif %}
+      
+      </a>
+    </div>
+
+    {% comment %} <a href="#" class="btn btn-primary mt-3">s</a>
+    <a href="#" class="btn btn-primary mt-3">s</a> {% endcomment %}
+  </div>
 </div>
