@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.gis',
     'accounts',
     'trails',
     'django_filters',
@@ -81,14 +80,16 @@ WSGI_APPLICATION = 'bgtrails.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'ENGINE': 'django.db.backends.postgresql',
         'HOST': 'localhost',
-        'NAME': 'bgtrails_db',
-        'USER': 'postgis_test',
-        'PASSWORD': '123456'
+        'PORT': '5432',
+        'NAME': 'bgtrails',
+        'USER': 'postgres',
+        'PASSWORD': 'docker'
         
     }
 }
+
 AWS_QUERYSTRING_AUTH = False
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
